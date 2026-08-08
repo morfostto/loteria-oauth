@@ -3,169 +3,216 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo · Sorteos fijos</title>
+<title>Demo v2 · Sorteos fijos</title>
 <style>
-  :root { --verde:#1a4a3a; --verde2:#14564a; --fondo:#f5f7f9; }
-  * { box-sizing:border-box; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
-  body { margin:0; background:var(--fondo); color:#111; padding-bottom:40px; }
-  header { background:var(--verde); color:#fff; padding:16px; }
-  h1 { font-size:18px; margin:0 0 4px; }
-  .sub { font-size:12px; opacity:.8; }
-  .card { background:#fff; margin:12px; border-radius:16px; padding:14px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
-  .card h2 { font-size:13px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.5px; color:#8a94a0; }
-  .row { display:flex; gap:8px; align-items:center; }
-  label { font-size:13px; font-weight:600; }
-  input { border:1px solid #d7dce2; border-radius:10px; padding:8px 10px; font-size:14px; }
-  .sorteos { display:flex; flex-direction:column; gap:8px; }
-  .sorteo { border:2px solid transparent; border-radius:14px; padding:10px 12px; background:#f2f5f7; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-  .sorteo.sel { border-color:var(--verde); background:#e8f3ee; }
-  .sorteo.off { opacity:.45; cursor:not-allowed; }
-  .st { font-size:11px; font-weight:700; padding:3px 8px; border-radius:99px; }
-  .st.abierto { background:#d9f3e3; color:#177a48; }
-  .st.cerrado { background:#fde2e2; color:#c0392b; }
-  .st.prox { background:#e5e9f5; color:#3b5bdb; }
-  button.grande { width:100%; background:var(--verde); color:#fff; border:0; border-radius:14px; padding:14px; font-size:16px; font-weight:800; }
-  button.caja { width:100%; border:0; border-radius:14px; padding:12px; font-weight:800; font-size:14px; }
-  .venta { display:flex; justify-content:space-between; font-size:14px; padding:6px 0; border-bottom:1px solid #eef1f4; }
-  .tot { font-weight:800; color:var(--verde2); }
-  .nota { font-size:12px; color:#66707c; }
-  #toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#14564a; color:#fff; padding:10px 18px; border-radius:99px; font-size:13px; opacity:0; transition:opacity .3s; pointer-events:none; white-space:nowrap; }
+:root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f5f7f9}
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+body{margin:0;background:var(--fondo);color:#111;padding-bottom:40px}
+header{background:var(--verde);color:#fff;padding:16px}
+h1{font-size:18px;margin:0 0 4px}
+.sub{font-size:12px;opacity:.8}
+.card{background:#fff;margin:12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.card h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
+.row{display:flex;gap:8px;align-items:center}
+label{font-size:13px;font-weight:600}
+input{border:1px solid #d7dce2;border-radius:10px;padding:8px 10px;font-size:14px}
+.sorteos{display:flex;flex-direction:column;gap:8px}
+.sorteo{border:2px solid transparent;border-radius:14px;padding:10px 12px;background:#f2f5f7;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap}
+.sorteo.sel{border-color:var(--verde);background:#e8f3ee}
+.sorteo.off{opacity:.45;cursor:not-allowed}
+.st{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.st.abierto{background:#d9f3e3;color:#177a48}
+.st.cerrado{background:#fde2e2;color:#c0392b}
+.st.prox{background:#e5e9f5;color:#3b5bdb}
+.tog{font-size:11px;font-weight:700;border:0;border-radius:99px;padding:6px 10px;background:#ffd98e;color:#7a5200;cursor:pointer}
+.tog.on{background:#177a48;color:#fff}
+button.grande{width:100%;background:var(--verde);color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:800}
+button.caja{width:100%;border:0;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
+.venta{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #eef1f4}
+.tot{font-weight:800;color:var(--verde2)}
+.nota{font-size:12px;color:#66707c}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}
+.modal pre{background:#fff;border:1px dashed #999;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;width:100%;max-width:340px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace}
+.modal .cerrar{margin-top:10px;background:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:60}
 </style>
 </head>
 <body>
 <header>
-  <h1>Demo: sorteos fijos Mañana / Tarde / Noche</h1>
-  <div class="sub">Así funcionaría vender eligiendo sorteo y día</div>
+<h1>Demo v2: sorteos fijos + fecha libre + varios números</h1>
+<div class="sub">Prueba cómo quedaría la venta y la pantalla Sorteos</div>
 </header>
 
 <div class="card">
-  <h2>1. Estado</h2>
-  <div class="row" style="margin-bottom:10px">
-    <label>Hora simulada:</label>
-    <input type="time" id="hora" value="13:30">
-  </div>
-  <button class="caja" id="btnCaja" style="background:#d9f3e3;color:#177a48">CAJA ABIERTA</button>
-  <p class="nota">Cambia la "hora simulada" para probar mañana, tarde o noche.</p>
+<h2>1. Estado</h2>
+<div class="row" style="margin-bottom:10px"><label>Hora simulada:</label><input type="time" id="hora" value="13:30"></div>
+<button class="caja" id="btnCaja" style="background:#d9f3e3;color:#177a48">CAJA ABIERTA</button>
 </div>
 
 <div class="card">
-  <h2>2. Día de la venta</h2>
-  <div class="row">
-    <button id="diaHoy" class="caja" style="background:#1a4a3a;color:#fff">Hoy</button>
-    <button id="diaMan" class="caja" style="background:#eef1f2;color:#555">Mañana</button>
-  </div>
+<h2>2. Día de la venta</h2>
+<input type="date" id="fecha" style="width:100%">
+<p class="nota">Solo hoy o fechas futuras — el pasado queda bloqueado.</p>
 </div>
 
 <div class="card">
-  <h2>3. Sorteo destino</h2>
-  <div class="sorteos" id="sorteos"></div>
-  <p class="nota">Cerrados = bloqueados. Abiertos y próximos = se puede vender.</p>
+<h2>3. Sorteo destino</h2>
+<div class="sorteos" id="sorteos"></div>
+<p class="nota">Cerrado = ya pasó (bloqueado). Abierto o próximo = se puede vender.</p>
 </div>
 
 <div class="card">
-  <h2>4. Venta</h2>
-  <div class="row" style="margin-bottom:8px">
-    <input id="num" placeholder="Número (ej: 21)" style="flex:1">
-    <input id="monto" type="number" placeholder="L" style="width:90px">
-  </div>
-  <button class="grande" id="facturar">FACTURAR</button>
+<h2>4. Venta</h2>
+<div class="row" style="margin-bottom:8px">
+<input id="num" placeholder="Números: 21, 23, 94" style="flex:1">
+<input id="monto" type="number" placeholder="L c/u" style="width:80px">
+</div>
+<input id="cliente" placeholder="Cliente (opcional)" style="width:100%;margin-bottom:8px">
+<button class="grande" id="facturar">FACTURAR</button>
 </div>
 
 <div class="card">
-  <h2>Resumen por sorteo</h2>
-  <div id="resumen"></div>
+<h2>5. Pantalla Sorteos (así se verá)</h2>
+<div class="sorteos" id="panelSorteos"></div>
+<p class="nota">Sin edición libre: los 3 sorteos fijos con su horario. El botón amarillo es la "mentirita": fuerza ABIERTO aunque ya pasó la hora.</p>
+</div>
+
+<div class="card">
+<h2>Resumen por sorteo</h2>
+<div id="resumen"></div>
+</div>
+
+<div class="modal" id="modalRecibo">
+<div style="display:flex;flex-direction:column;align-items:center">
+<pre id="reciboTxt"></pre>
+<button class="cerrar" id="cerrarRecibo">Cerrar</button>
+</div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-const SORTEOS = [
-  { id:'manana', nombre:'Mañana', abre:'06:00', cierra:'11:00' },
-  { id:'tarde', nombre:'Tarde', abre:'11:03', cierra:'15:00' },
-  { id:'noche', nombre:'Noche', abre:'15:03', cierra:'21:00' },
+const SORTEOS=[
+{id:'manana',nombre:'Mañana',abre:'06:00',cierra:'11:00',horaRecibo:'11:00 AM'},
+{id:'tarde',nombre:'Tarde',abre:'11:03',cierra:'15:00',horaRecibo:'3:00 PM'},
+{id:'noche',nombre:'Noche',abre:'15:03',cierra:'21:00',horaRecibo:'9:00 PM'}
 ];
-let cajaAbierta = true;
-let dia = 'hoy';
-let sel = 'tarde';
-let ventas = [];
-const $ = id => document.getElementById(id);
-
-function estadoSorteo(s) {
-  if (dia === 'manana') return 'prox';
-  const h = $('hora').value;
-  if (h < s.abre) return 'prox';
-  if (h >= s.cierra) return 'cerrado';
+const NOMBRES={'00':'Ballena','03':'Pescado','15':'Ratón','21':'Pájaro','22':'Ataúd','91':'Tortuga','94':'Carro'};
+let cajaAbierta=true, sel='tarde', ventas=[], override={};
+const $=id=>document.getElementById(id);
+function hoyStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtFecha(f){const p=f.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function fmtHora12(h){const p=h.split(':');let H=+p[0];const am=H<12?'AM':'PM';H=H%12||12;return H+':'+p[1]+' '+am;}
+function estadoSorteo(s){
+  const f=$('fecha').value;
+  if(f>hoyStr()) return 'prox';
+  if(override[s.id]) return 'abierto';
+  const h=$('hora').value;
+  if(h<s.abre) return 'prox';
+  if(h>=s.cierra) return 'cerrado';
   return 'abierto';
 }
-
-function pintarSorteos() {
-  const cont = $('sorteos');
-  cont.innerHTML = '';
-  SORTEOS.forEach(s => {
-    const st = estadoSorteo(s);
-    const div = document.createElement('div');
-    div.className = 'sorteo' + (sel===s.id?' sel':'') + (st==='cerrado'?' off':'');
-    const txtSt = st==='abierto'?'ABIERTO':st==='cerrado'?'CERRADO':'PRÓXIMO';
-    div.innerHTML = '<div><b>'+s.nombre+'</b><div class="nota">'+s.abre+' – '+s.cierra+'</div></div><span class="st '+st+'">'+txtSt+'</span>';
-    div.onclick = () => { if (st!=='cerrado') { sel = s.id; pintarSorteos(); } };
+function pintarSorteos(){
+  const cont=$('sorteos');cont.innerHTML='';
+  const st={};SORTEOS.forEach(s=>{st[s.id]=estadoSorteo(s);});
+  if(st[sel]==='cerrado'){const f=SORTEOS.find(s=>st[s.id]!=='cerrado');if(f)sel=f.id;}
+  SORTEOS.forEach(s=>{
+    const stt=st[s.id];
+    const div=document.createElement('div');
+    div.className='sorteo'+(sel===s.id?' sel':'')+(stt==='cerrado'?' off':'');
+    const txt=stt==='abierto'?'ABIERTO':stt==='cerrado'?'CERRADO':'PRÓXIMO';
+    div.innerHTML='<div><b>'+s.nombre+'</b><div class="nota">'+s.abre+' – '+s.cierra+'</div></div><span class="st '+stt+'">'+txt+'</span>';
+    div.onclick=function(){if(stt!=='cerrado'){sel=s.id;pintarSorteos();}};
     cont.appendChild(div);
   });
 }
-
-function pintarResumen() {
-  const cont = $('resumen');
-  cont.innerHTML = '';
-  ['hoy','manana'].forEach(d => {
-    SORTEOS.forEach(s => {
-      const vs = ventas.filter(v => v.sorteoId===s.id && v.dia===d);
-      if (!vs.length) return;
-      const tot = vs.reduce((a,v)=>a+v.monto,0);
-      const t = document.createElement('div');
-      t.innerHTML = '<div class="venta"><span><b>'+(d==='hoy'?'Hoy':'Mañana')+' · '+s.nombre+'</b> ('+vs.length+' venta'+(vs.length>1?'s':'')+')</span><span class="tot">L '+tot.toFixed(2)+'</span></div>';
+function pintarPanel(){
+  const cont=$('panelSorteos');cont.innerHTML='';
+  SORTEOS.forEach(s=>{
+    const stt=estadoSorteo(s);
+    const div=document.createElement('div');
+    div.className='sorteo';div.style.cursor='default';
+    const txt=stt==='abierto'?'ABIERTO':stt==='cerrado'?'CERRADO':'PRÓXIMO';
+    div.innerHTML='<div style="flex:1"><b>'+s.nombre+'</b><div class="nota">'+s.abre+' – '+s.cierra+' · en recibo: '+s.horaRecibo+'</div></div><span class="st '+stt+'">'+txt+'</span>';
+    const tog=document.createElement('button');
+    tog.className='tog'+(override[s.id]?' on':'');
+    tog.textContent=override[s.id]?'Quitar forzado':'Forzar abierto';
+    tog.onclick=function(){override[s.id]=!override[s.id];pintarSorteos();pintarPanel();toast(override[s.id]?s.nombre+' forzado ABIERTO (mentirita)':'Forzado quitado en '+s.nombre);};
+    div.appendChild(tog);
+    cont.appendChild(div);
+  });
+}
+function pintarResumen(){
+  const cont=$('resumen');cont.innerHTML='';
+  const fechas=[...new Set(ventas.map(v=>v.fecha))].sort();
+  fechas.forEach(f=>{
+    SORTEOS.forEach(s=>{
+      const vs=ventas.filter(v=>v.sorteoId===s.id&&v.fecha===f);
+      if(!vs.length)return;
+      const tot=vs.reduce((a,v)=>a+v.lineas.reduce((x,l)=>x+l.monto,0),0);
+      const t=document.createElement('div');
+      t.innerHTML='<div class="venta"><span><b>'+fmtFecha(f)+' · '+s.nombre+'</b> ('+vs.length+' venta'+(vs.length>1?'s':'')+')</span><span class="tot">L '+tot.toFixed(2)+'</span></div>';
       cont.appendChild(t);
-      vs.forEach(v => {
-        const l = document.createElement('div');
-        l.className = 'venta';
-        l.innerHTML = '<span style="color:#66707c">Nº '+v.num+' · vendido a las '+v.horaSim+'</span><span>L '+v.monto.toFixed(2)+'</span>';
-        cont.appendChild(l);
+      vs.forEach(v=>{
+        v.lineas.forEach(l=>{
+          const row=document.createElement('div');
+          row.className='venta';
+          row.innerHTML='<span style="color:#66707c">Nº '+l.num+(NOMBRES[l.num]?' '+NOMBRES[l.num]:'')+' · vendido '+fmtHora12(v.hora)+'</span><span>L '+l.monto.toFixed(2)+'</span>';
+          cont.appendChild(row);
+        });
       });
     });
   });
-  if (!ventas.length) cont.innerHTML = '<p class="nota">Prueba esto: deja la hora simulada en 13:30, elige el sorteo NOCHE y factura un número. Verás que la venta queda en el resumen de la NOCHE, aunque "ahora" sea la tarde.</p>';
+  if(!ventas.length)cont.innerHTML='<p class="nota">Factura algo para verlo aquí. Ej: hora 13:30, fecha hoy, sorteo NOCHE, números "21, 23", monto 50.</p>';
 }
-
-function toast(msg) {
-  const t = $('toast');
-  t.textContent = msg;
-  t.style.opacity = 1;
-  setTimeout(()=>t.style.opacity=0, 2200);
+function cen(t){const w=30;if(t.length>=w)return t;return ' '.repeat(Math.floor((w-t.length)/2))+t;}
+function textoRecibo(v){
+  const s=SORTEOS.find(x=>x.id===v.sorteoId);
+  const L=[];
+  L.push(cen('LA DIARIA'));
+  L.push('-'.repeat(30));
+  L.push('Ticket: '+v.codigo);
+  L.push('Sorteo: '+s.nombre+' '+s.horaRecibo);
+  if(v.cliente)L.push('Cliente: '+v.cliente);
+  L.push('Fecha: '+fmtFecha(v.fecha)+'  '+fmtHora12(v.hora));
+  L.push('-'.repeat(30));
+  let total=0;
+  v.lineas.forEach(l=>{total+=l.monto;L.push('   '+l.num+(NOMBRES[l.num]?'  '+NOMBRES[l.num]:'')+'   L '+l.monto.toFixed(2));});
+  L.push('-'.repeat(30));
+  L.push('TOTAL A PAGAR   L '+total.toFixed(2));
+  L.push('-'.repeat(30));
+  L.push(cen('¡Gracias por su compra!'));
+  return L.join('\n');
 }
-
-$('hora').onchange = pintarSorteos;
-$('btnCaja').onclick = () => {
-  cajaAbierta = !cajaAbierta;
-  const b = $('btnCaja');
-  b.textContent = cajaAbierta ? 'CAJA ABIERTA' : 'CAJA CERRADA';
-  b.style.background = cajaAbierta ? '#d9f3e3' : '#fde2e2';
-  b.style.color = cajaAbierta ? '#177a48' : '#c0392b';
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(function(){t.style.opacity=0;},2200);}
+$('hora').onchange=function(){pintarSorteos();pintarPanel();};
+$('fecha').onchange=function(){
+  if($('fecha').value<hoyStr()){$('fecha').value=hoyStr();toast('El pasado está bloqueado: puesto hoy');}
+  pintarSorteos();pintarPanel();
 };
-$('diaHoy').onclick = () => { dia='hoy'; $('diaHoy').style.background='#1a4a3a'; $('diaHoy').style.color='#fff'; $('diaMan').style.background='#eef1f2'; $('diaMan').style.color='#555'; pintarSorteos(); };
-$('diaMan').onclick = () => { dia='manana'; $('diaMan').style.background='#1a4a3a'; $('diaMan').style.color='#fff'; $('diaHoy').style.background='#eef1f2'; $('diaHoy').style.color='#555'; pintarSorteos(); };
-
-$('facturar').onclick = () => {
-  if (!cajaAbierta) { toast('La caja está cerrada: ábrela para vender'); return; }
-  const num = $('num').value.trim();
-  const monto = parseFloat($('monto').value);
-  if (!num || isNaN(monto) || monto<=0) { toast('Escribe número y monto'); return; }
-  const s = SORTEOS.find(x=>x.id===sel);
-  ventas.push({ sorteoId: sel, dia, num, monto, horaSim: $('hora').value });
-  $('num').value=''; $('monto').value='';
-  toast('Ticket impreso ✔ · venta en '+s.nombre+' ('+(dia==='hoy'?'hoy':'mañana')+')');
+$('btnCaja').onclick=function(){
+  cajaAbierta=!cajaAbierta;
+  const b=$('btnCaja');
+  b.textContent=cajaAbierta?'CAJA ABIERTA':'CAJA CERRADA';
+  b.style.background=cajaAbierta?'#d9f3e3':'#fde2e2';
+  b.style.color=cajaAbierta?'#177a48':'#c0392b';
+};
+$('facturar').onclick=function(){
+  if(!cajaAbierta){toast('La caja está cerrada: ábrela para vender');return;}
+  const nums=$('num').value.split(/[,\s]+/).map(function(s){return s.trim();}).filter(Boolean).map(function(n){return n.padStart(2,'0');});
+  const monto=parseFloat($('monto').value);
+  if(!nums.length||isNaN(monto)||monto<=0){toast('Escribe números (pueden ser varios) y monto');return;}
+  const v={codigo:'TK-DEMO'+Math.floor(1000+Math.random()*9000),sorteoId:sel,fecha:$('fecha').value,hora:$('hora').value,cliente:$('cliente').value.trim(),lineas:nums.map(function(n){return {num:n,monto:monto};})};
+  ventas.push(v);
+  $('num').value='';$('monto').value='';
+  $('reciboTxt').textContent=textoRecibo(v);
+  $('modalRecibo').classList.add('open');
   pintarResumen();
 };
-
-pintarSorteos();
-pintarResumen();
+$('cerrarRecibo').onclick=function(){$('modalRecibo').classList.remove('open');};
+$('fecha').min=hoyStr();$('fecha').value=hoyStr();
+pintarSorteos();pintarPanel();pintarResumen();
 </script>
 </body>
 </html>
