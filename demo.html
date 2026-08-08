@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v3 · Sorteos fijos</title>
+<title>Demo v4 · Sorteos fijos</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f5f7f9}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -14,7 +14,6 @@ h1{font-size:18px;margin:0 0 4px}
 .card{background:#fff;margin:12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .card h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
 .row{display:flex;gap:8px;align-items:center}
-label{font-size:13px;font-weight:600}
 input,select{border:1px solid #d7dce2;border-radius:10px;padding:8px 10px;font-size:14px;background:#fff}
 .sorteos{display:flex;flex-direction:column;gap:8px}
 .sorteo{border:2px solid transparent;border-radius:14px;padding:10px 12px;background:#f2f5f7;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
@@ -27,29 +26,31 @@ input,select{border:1px solid #d7dce2;border-radius:10px;padding:8px 10px;font-s
 button.grande{width:100%;background:var(--verde);color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:800}
 button.caja{width:100%;border:0;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
 button.chico{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;background:#d9efe8;color:#14564a}
-.venta{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid #eef1f4}
-.tot{font-weight:800;color:var(--verde2)}
+.trow{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:10px 4px;border-bottom:1px solid #eef1f4;cursor:pointer}
+.trow:active{opacity:.7}
 .nota{font-size:12px;color:#66707c}
 .linea{display:flex;justify-content:space-between;align-items:center;background:#f2f5f7;border-radius:10px;padding:8px 10px;margin-bottom:6px;font-size:14px}
 .linea button{border:0;background:#fde2e2;color:#c0392b;border-radius:8px;padding:4px 8px;font-weight:700}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
 .modal.open{display:flex}
-.modal pre{background:#fff;border:1px dashed #999;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;width:100%;max-width:340px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace}
-.modal .cerrar{margin-top:10px;background:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700}
+.modal .box{width:100%;max-width:360px;max-height:85vh;overflow-y:auto}
+.modal pre{background:#fff;border:1px dashed #999;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace}
+.modal .btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.modal .btns button{flex:1;background:#fff;border:0;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13px}
+.modal .btns button.verde{background:#14564a;color:#fff}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:60}
 </style>
 </head>
 <body>
 <header>
-<h1>Demo v3: sorteos fijos (versión final)</h1>
-<div class="sub">Números de uno en uno · cliente con nuevo · resumen solo pendientes</div>
+<h1>Demo v4: hora real + pendientes tocables</h1>
+<div class="sub">Así se vería la sección POR JUGAR en tu Inicio</div>
 </header>
 
 <div class="card">
 <h2>1. Caja</h2>
-<div class="row" style="margin-bottom:10px"><label>Hora simulada:</label><input type="time" id="hora" value="13:30"></div>
 <button class="caja" id="btnCaja"></button>
-<p class="nota">La caja muestra el sorteo que se está vendiendo (no la hora).</p>
+<p class="nota">Con la hora real de tu celular. Muestra el sorteo que se está vendiendo.</p>
 </div>
 
 <div class="card">
@@ -66,11 +67,11 @@ button.chico{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-
 <div class="card">
 <h2>4. Venta</h2>
 <select id="cliente" style="width:100%;margin-bottom:8px"></select>
-<div id="nuevoClienteBox" style="display:none" class="row" style="margin-bottom:8px">
+<div id="nuevoClienteBox" style="display:none" class="row">
 <input id="nuevoCliente" placeholder="Nombre del nuevo cliente" style="flex:1">
 <button class="chico" id="guardarCliente">Guardar</button>
 </div>
-<div class="row" style="margin-bottom:8px">
+<div class="row" style="margin:8px 0">
 <input id="num" placeholder="Número (ej: 21)" style="flex:1">
 <input id="monto" type="number" placeholder="L" style="width:80px">
 </div>
@@ -80,20 +81,40 @@ button.chico{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-
 </div>
 
 <div class="card">
-<h2>5. Pantalla Sorteos (así se verá)</h2>
-<div class="sorteos" id="panelSorteos"></div>
-<p class="nota">Sin edición y sin forzar: solo estado real según la hora.</p>
+<h2>Por jugar (así se vería en Inicio)</h2>
+<div id="resumen"></div>
+<p class="nota">Toca un ticket: ves el recibo y puedes editar/agregar números.</p>
 </div>
 
 <div class="card">
-<h2>Resumen (solo sorteos pendientes)</h2>
-<div id="resumen"></div>
+<h2>5. Pantalla Sorteos</h2>
+<div class="sorteos" id="panelSorteos"></div>
 </div>
 
 <div class="modal" id="modalRecibo">
-<div style="display:flex;flex-direction:column;align-items:center">
+<div class="box" style="display:flex;flex-direction:column;align-items:center">
 <pre id="reciboTxt"></pre>
-<button class="cerrar" id="cerrarRecibo">Cerrar</button>
+<button class="cerrar" id="cerrarRecibo" style="background:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700">Cerrar</button>
+</div>
+</div>
+
+<div class="modal" id="modalTicket">
+<div class="box">
+<pre id="ticketRecibo"></pre>
+<div id="ticketEdit" style="display:none">
+<div id="editLineas"></div>
+<div class="row" style="margin-top:8px">
+<input id="eNum" placeholder="Número" style="flex:1">
+<input id="eMonto" type="number" placeholder="L" style="width:80px">
+</div>
+<button class="chico" id="eAdd" style="width:100%;margin-top:8px">+ Agregar número</button>
+</div>
+<div class="btns">
+<button id="btnVerRecibo">Ver recibo</button>
+<button id="btnEditar">Editar / agregar</button>
+<button id="btnGuardarEdit" class="verde" style="display:none">Guardar cambios</button>
+<button id="cerrarTicket">Cerrar</button>
+</div>
 </div>
 </div>
 
@@ -108,21 +129,22 @@ const SORTEOS=[
 const NOMBRES={'00':'Ballena','03':'Pescado','15':'Ratón','21':'Pájaro','22':'Ataúd','91':'Tortuga','94':'Carro'};
 let cajaAbierta=true, sel='tarde', ventas=[], lineas=[], clienteSel='';
 let clientesDemo=['Yalil','Eva','David','Lupe'];
+let ticketIdx=-1, editLineas=[];
 const $=id=>document.getElementById(id);
 function hoyStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function fmtFecha(f){const p=f.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
 function fmtHora12(h){const p=h.split(':');let H=+p[0];const am=H<12?'AM':'PM';H=H%12||12;return H+':'+p[1]+' '+am;}
 function estadoEn(f,s){
   if(f>hoyStr())return 'prox';
-  const h=$('hora').value;
+  const h=nowHM();
   if(h<s.abre)return 'prox';
   if(h>=s.cierra)return 'cerrado';
   return 'abierto';
 }
 function sorteoDe(id){return SORTEOS.find(x=>x.id===id);}
-function sorteoEnCurso(){
-  return SORTEOS.find(s=>estadoEn(hoyStr(),s)==='abierto')||SORTEOS.find(s=>estadoEn(hoyStr(),s)==='prox')||null;
-}
+function totalDe(v){return v.lineas.reduce((a,l)=>a+l.monto,0);}
+function sorteoEnCurso(){return SORTEOS.find(s=>estadoEn(hoyStr(),s)==='abierto')||SORTEOS.find(s=>estadoEn(hoyStr(),s)==='prox')||null;}
 function pintarCaja(){
   const b=$('btnCaja');const sc=sorteoEnCurso();
   if(!cajaAbierta){b.textContent='CAJA CERRADA';b.style.background='#fde2e2';b.style.color='#c0392b';}
@@ -170,27 +192,16 @@ function pintarLineas(){
 }
 function pintarResumen(){
   const cont=$('resumen');cont.innerHTML='';
-  const pendientes=ventas.filter(function(v){return estadoEn(v.fecha,sorteoDe(v.sorteoId))!=='cerrado';});
-  const fechas=[...new Set(pendientes.map(v=>v.fecha))].sort();
-  fechas.forEach(function(f){
-    SORTEOS.forEach(function(s){
-      const vs=pendientes.filter(v=>v.sorteoId===s.id&&v.fecha===f);
-      if(!vs.length)return;
-      const tot=vs.reduce((a,v)=>a+v.lineas.reduce((x,l)=>x+l.monto,0),0);
-      const t=document.createElement('div');
-      t.innerHTML='<div class="venta"><span><b>'+fmtFecha(f)+' · '+s.nombre+'</b> ('+vs.length+' venta'+(vs.length>1?'s':'')+')</span><span class="tot">L '+tot.toFixed(2)+'</span></div>';
-      cont.appendChild(t);
-      vs.forEach(function(v){
-        v.lineas.forEach(function(l){
-          const row=document.createElement('div');
-          row.className='venta';
-          row.innerHTML='<span style="color:#66707c">Nº '+l.num+(NOMBRES[l.num]?' '+NOMBRES[l.num]:'')+(v.cliente?' · '+v.cliente:'')+'</span><span>L '+l.monto.toFixed(2)+'</span>';
-          cont.appendChild(row);
-        });
-      });
-    });
+  const pendientes=ventas.map(function(v,i){return {v:v,i:i};}).filter(function(x){return estadoEn(x.v.fecha,sorteoDe(x.v.sorteoId))!=='cerrado';});
+  pendientes.forEach(function(x){
+    const v=x.v;const s=sorteoDe(v.sorteoId);
+    const row=document.createElement('div');
+    row.className='trow';
+    row.innerHTML='<span><b>'+fmtFecha(v.fecha)+' · '+s.nombre+'</b> · '+(v.cliente||'General')+'</span><span style="font-weight:800;color:#14564a">L '+totalDe(v).toFixed(2)+'</span>';
+    row.onclick=function(){abrirTicket(x.i);};
+    cont.appendChild(row);
   });
-  if(!pendientes.length)cont.innerHTML='<p class="nota">Solo verás ventas cuyo sorteo AÚN NO llega. Cuando el sorteo se cierra (por hora), su venta desaparece de aquí y queda en el Historial.</p>';
+  if(!pendientes.length)cont.innerHTML='<p class="nota">Sin tickets pendientes. Cuando un sorteo se cierra, su ticket sale de aquí y queda en el Historial.</p>';
 }
 function cen(t){const w=30;if(t.length>=w)return t;return ' '.repeat(Math.floor((w-t.length)/2))+t;}
 function textoRecibo(v){
@@ -211,8 +222,53 @@ function textoRecibo(v){
   L.push(cen('¡Gracias por su compra!'));
   return L.join('\n');
 }
+function abrirTicket(i){
+  ticketIdx=i;
+  $('ticketRecibo').textContent=textoRecibo(ventas[i]);
+  $('ticketRecibo').style.display='block';
+  $('ticketEdit').style.display='none';
+  $('btnGuardarEdit').style.display='none';
+  $('modalTicket').classList.add('open');
+}
+function pintarEditLineas(){
+  const cont=$('editLineas');cont.innerHTML='';
+  editLineas.forEach(function(l,i){
+    const div=document.createElement('div');
+    div.className='linea';
+    div.innerHTML='<span><b>'+l.num+'</b>'+(NOMBRES[l.num]?' '+NOMBRES[l.num]:'')+' · L '+l.monto.toFixed(2)+'</span><button>✕</button>';
+    div.querySelector('button').onclick=function(){editLineas.splice(i,1);pintarEditLineas();};
+    cont.appendChild(div);
+  });
+}
+$('btnVerRecibo').onclick=function(){
+  $('ticketRecibo').style.display='block';
+  $('ticketEdit').style.display='none';
+  $('btnGuardarEdit').style.display='none';
+};
+$('btnEditar').onclick=function(){
+  editLineas=ventas[ticketIdx].lineas.map(function(l){return {num:l.num,monto:l.monto};});
+  pintarEditLineas();
+  $('ticketRecibo').style.display='none';
+  $('ticketEdit').style.display='block';
+  $('btnGuardarEdit').style.display='block';
+};
+$('eAdd').onclick=function(){
+  const n=$('eNum').value.trim();const m=parseFloat($('eMonto').value);
+  if(!n||isNaN(m)||m<=0){toast('Escribe número y precio');return;}
+  editLineas.push({num:n.padStart(2,'0'),monto:m});
+  $('eNum').value='';$('eMonto').value='';
+  pintarEditLineas();
+};
+$('btnGuardarEdit').onclick=function(){
+  if(!editLineas.length){toast('El ticket no puede quedar vacío');return;}
+  ventas[ticketIdx].lineas=editLineas.slice();
+  $('ticketRecibo').textContent=textoRecibo(ventas[ticketIdx]);
+  $('btnVerRecibo').onclick();
+  pintarResumen();
+  toast('Ticket actualizado ✓');
+};
+$('cerrarTicket').onclick=function(){$('modalTicket').classList.remove('open');};
 function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(function(){t.style.opacity=0;},2200);}
-$('hora').onchange=function(){pintarCaja();pintarSorteos();pintarPanel();pintarResumen();};
 $('fecha').onchange=function(){
   if($('fecha').value<hoyStr()){$('fecha').value=hoyStr();toast('El pasado está bloqueado: puesto hoy');}
   pintarSorteos();
@@ -230,8 +286,7 @@ $('guardarCliente').onclick=function(){
   pintarClientes();toast('Cliente '+n+' agregado');
 };
 $('agregarNum').onclick=function(){
-  const n=$('num').value.trim();
-  const m=parseFloat($('monto').value);
+  const n=$('num').value.trim();const m=parseFloat($('monto').value);
   if(!n||isNaN(m)||m<=0){toast('Escribe un número y su precio');return;}
   lineas.push({num:n.padStart(2,'0'),monto:m});
   $('num').value='';$('monto').value='';
@@ -240,7 +295,7 @@ $('agregarNum').onclick=function(){
 $('facturar').onclick=function(){
   if(!cajaAbierta){toast('La caja está cerrada: ábrela para vender');return;}
   if(!lineas.length){toast('Agrega al menos un número al ticket');return;}
-  const v={codigo:'TK-DEMO'+Math.floor(1000+Math.random()*9000),sorteoId:sel,fecha:$('fecha').value,hora:$('hora').value,cliente:clienteSel,lineas:lineas.slice()};
+  const v={codigo:'TK-DEMO'+Math.floor(1000+Math.random()*9000),sorteoId:sel,fecha:$('fecha').value,hora:nowHM(),cliente:clienteSel,lineas:lineas.slice()};
   ventas.push(v);
   lineas=[];pintarLineas();
   $('reciboTxt').textContent=textoRecibo(v);
@@ -249,6 +304,7 @@ $('facturar').onclick=function(){
 };
 $('cerrarRecibo').onclick=function(){$('modalRecibo').classList.remove('open');};
 $('fecha').min=hoyStr();$('fecha').value=hoyStr();
+setInterval(function(){pintarCaja();pintarSorteos();pintarPanel();pintarResumen();},30000);
 pintarCaja();pintarSorteos();pintarPanel();pintarClientes();pintarLineas();pintarResumen();
 </script>
 </body>
