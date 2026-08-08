@@ -3,309 +3,170 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v4 · Sorteos fijos</title>
+<title>Demo v5 · Nueva Venta rediseñada</title>
 <style>
-:root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f5f7f9}
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-body{margin:0;background:var(--fondo);color:#111;padding-bottom:40px}
-header{background:var(--verde);color:#fff;padding:16px}
-h1{font-size:18px;margin:0 0 4px}
-.sub{font-size:12px;opacity:.8}
-.card{background:#fff;margin:12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.card h2{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
-.row{display:flex;gap:8px;align-items:center}
-input,select{border:1px solid #d7dce2;border-radius:10px;padding:8px 10px;font-size:14px;background:#fff}
-.sorteos{display:flex;flex-direction:column;gap:8px}
-.sorteo{border:2px solid transparent;border-radius:14px;padding:10px 12px;background:#f2f5f7;display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
-.sorteo.sel{border-color:var(--verde);background:#e8f3ee}
-.sorteo.off{opacity:.45;cursor:not-allowed}
-.st{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;white-space:nowrap}
-.st.abierto{background:#d9f3e3;color:#177a48}
-.st.cerrado{background:#fde2e2;color:#c0392b}
-.st.prox{background:#e5e9f5;color:#3b5bdb}
-button.grande{width:100%;background:var(--verde);color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:800}
-button.caja{width:100%;border:0;border-radius:14px;padding:12px;font-weight:800;font-size:14px}
-button.chico{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;background:#d9efe8;color:#14564a}
-.trow{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:10px 4px;border-bottom:1px solid #eef1f4;cursor:pointer}
-.trow:active{opacity:.7}
-.nota{font-size:12px;color:#66707c}
-.linea{display:flex;justify-content:space-between;align-items:center;background:#f2f5f7;border-radius:10px;padding:8px 10px;margin-bottom:6px;font-size:14px}
-.linea button{border:0;background:#fde2e2;color:#c0392b;border-radius:8px;padding:4px 8px;font-weight:700}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+:root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--fondo);color:#111;padding-bottom:95px}
+header{background:var(--verde);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+header h1{font-size:17px;margin:0;flex:1}
+.back{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--verde);display:flex;align-items:center;justify-content:center;font-size:18px;border:0}
+.card{background:#fff;margin:10px 12px;border-radius:16px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card h2{font-size:11px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
+.chips{display:flex;gap:8px;margin:10px 12px 0}
+.chip{flex:1;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700}
+.chip small{display:block;color:#8a94a0;font-size:9px;font-weight:700;text-transform:uppercase}
+.trow{display:flex;align-items:center;gap:8px;background:#f2f5f7;border-radius:12px;padding:8px 10px;margin-bottom:6px}
+.trow .num{width:34px;height:34px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.trow .det{flex:1;font-size:13px}
+.trow button{border:0;border-radius:8px;padding:6px 9px;font-weight:700;font-size:12px}
+.trow .ed{background:#e5e9f5;color:#3b5bdb}
+.trow .del{background:#fde2e2;color:#c0392b}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.grid button{aspect-ratio:1;border:0;border-radius:10px;background:#eceff2;font-weight:700;font-size:12px;color:#333}
+.grid button.in{background:var(--verde);color:#fff}
+.grid button:active{transform:scale(.94)}
+.tipos{display:flex;gap:8px;overflow-x:auto}
+.tipo{flex-shrink:0;border:2px solid transparent;border-radius:12px;padding:8px 14px;background:#f2f5f7;font-size:12px;font-weight:700;text-align:center}
+.tipo small{display:block;color:#8a94a0;font-weight:600}
+.tipo.sel{border-color:var(--verde);background:#e8f3ee}
+.bottombar{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -2px 10px rgba(0,0,0,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;z-index:20}
+.bottombar select{flex:1;border:1px solid #d7dce2;border-radius:12px;padding:10px;font-size:13px;background:#fff}
+.bottombar .tot{font-weight:800;color:var(--verde2);font-size:15px;min-width:64px;text-align:right}
+.bottombar .fact{background:var(--verde);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:800;font-size:14px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:50}
 .modal.open{display:flex}
-.modal .box{width:100%;max-width:360px;max-height:85vh;overflow-y:auto}
-.modal pre{background:#fff;border:1px dashed #999;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace}
-.modal .btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.modal .btns button{flex:1;background:#fff;border:0;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13px}
-.modal .btns button.verde{background:#14564a;color:#fff}
-#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:60}
+.sheet{background:#fff;width:100%;max-width:420px;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.sheet .head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sheet .bignum{width:46px;height:46px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
+.montos{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.montos button{border:0;border-radius:12px;padding:10px 0;background:#fdf6e3;color:#92400e;font-weight:700;font-size:13px}
+.montos button.sel{background:var(--verde);color:#fff}
+.otro input{width:100%;border:1px solid #d7dce2;border-radius:12px;padding:10px;font-size:14px;margin-top:10px}
+.acts{display:flex;gap:8px;margin-top:12px}
+.acts button{flex:1;border:0;border-radius:12px;padding:13px;font-weight:800;font-size:14px}
+.ok{background:var(--verde);color:#fff}
+.cancel{background:#eef1f4;color:#555}
+.empty{color:#98a2ae;font-size:13px;text-align:center;padding:8px 0}
+#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:60}
 </style>
 </head>
 <body>
-<header>
-<h1>Demo v4: hora real + pendientes tocables</h1>
-<div class="sub">Así se vería la sección POR JUGAR en tu Inicio</div>
-</header>
+<header><button class="back">←</button><h1>Nueva Venta</h1></header>
 
-<div class="card">
-<h2>1. Caja</h2>
-<button class="caja" id="btnCaja"></button>
-<p class="nota">Con la hora real de tu celular. Muestra el sorteo que se está vendiendo.</p>
+<div class="chips">
+<div class="chip"><span><small>Día</small>08/08/2026</span><span>▾</span></div>
+<div class="chip"><span><small>Sorteo</small>Noche · 08/08</span><span>▾</span></div>
 </div>
 
 <div class="card">
-<h2>2. Día de la venta</h2>
-<input type="date" id="fecha" style="width:100%">
-<p class="nota">Hoy o futuro — el pasado bloqueado.</p>
+<h2>Jugadas agregadas</h2>
+<div id="ticket"></div>
 </div>
 
 <div class="card">
-<h2>3. Sorteo destino</h2>
-<div class="sorteos" id="sorteos"></div>
+<h2>Tablero 00–99 · toca un número</h2>
+<div class="grid" id="grid"></div>
 </div>
 
 <div class="card">
-<h2>4. Venta</h2>
-<select id="cliente" style="width:100%;margin-bottom:8px"></select>
-<div id="nuevoClienteBox" style="display:none" class="row">
-<input id="nuevoCliente" placeholder="Nombre del nuevo cliente" style="flex:1">
-<button class="chico" id="guardarCliente">Guardar</button>
-</div>
-<div class="row" style="margin:8px 0">
-<input id="num" placeholder="Número (ej: 21)" style="flex:1">
-<input id="monto" type="number" placeholder="L" style="width:80px">
-</div>
-<button class="chico" id="agregarNum" style="width:100%;margin-bottom:10px">+ Agregar número al ticket</button>
-<div id="listaLineas"></div>
-<button class="grande" id="facturar">FACTURAR</button>
+<h2>Tipo de juego</h2>
+<div class="tipos" id="tipos"></div>
 </div>
 
-<div class="card">
-<h2>Por jugar (así se vería en Inicio)</h2>
-<div id="resumen"></div>
-<p class="nota">Toca un ticket: ves el recibo y puedes editar/agregar números.</p>
+<div class="bottombar">
+<select id="cliente"><option value="">Cliente (opcional)</option><option>Yalil</option><option>Eva</option><option>David</option></select>
+<div class="tot" id="tot">L 0.00</div>
+<button class="fact" id="facturar">FACTURAR</button>
 </div>
 
-<div class="card">
-<h2>5. Pantalla Sorteos</h2>
-<div class="sorteos" id="panelSorteos"></div>
-</div>
-
-<div class="modal" id="modalRecibo">
-<div class="box" style="display:flex;flex-direction:column;align-items:center">
-<pre id="reciboTxt"></pre>
-<button class="cerrar" id="cerrarRecibo" style="background:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700">Cerrar</button>
+<div class="modal" id="modal">
+<div class="sheet">
+<div class="head"><div class="bignum" id="sheetNum">35</div><div><b id="sheetNombre">Número 35</b><div style="font-size:12px;color:#8a94a0">Elige el monto de venta</div></div></div>
+<div class="montos" id="montos"></div>
+<div class="otro"><input id="otroMonto" type="number" placeholder="Otro monto (L)"></div>
+<div class="acts"><button class="cancel" id="cancelar">Cancelar</button><button class="ok" id="agregar">Agregar</button></div>
 </div>
 </div>
-
-<div class="modal" id="modalTicket">
-<div class="box">
-<pre id="ticketRecibo"></pre>
-<div id="ticketEdit" style="display:none">
-<div id="editLineas"></div>
-<div class="row" style="margin-top:8px">
-<input id="eNum" placeholder="Número" style="flex:1">
-<input id="eMonto" type="number" placeholder="L" style="width:80px">
-</div>
-<button class="chico" id="eAdd" style="width:100%;margin-top:8px">+ Agregar número</button>
-</div>
-<div class="btns">
-<button id="btnVerRecibo">Ver recibo</button>
-<button id="btnEditar">Editar / agregar</button>
-<button id="btnGuardarEdit" class="verde" style="display:none">Guardar cambios</button>
-<button id="cerrarTicket">Cerrar</button>
-</div>
-</div>
-</div>
-
 <div id="toast"></div>
 
 <script>
-const SORTEOS=[
-{id:'manana',nombre:'Mañana',abre:'06:00',cierra:'11:00',horaRecibo:'11:00 AM'},
-{id:'tarde',nombre:'Tarde',abre:'11:03',cierra:'15:00',horaRecibo:'3:00 PM'},
-{id:'noche',nombre:'Noche',abre:'15:03',cierra:'21:00',horaRecibo:'9:00 PM'}
-];
-const NOMBRES={'00':'Ballena','03':'Pescado','15':'Ratón','21':'Pájaro','22':'Ataúd','91':'Tortuga','94':'Carro'};
-let cajaAbierta=true, sel='tarde', ventas=[], lineas=[], clienteSel='';
-let clientesDemo=['Yalil','Eva','David','Lupe'];
-let ticketIdx=-1, editLineas=[];
+const NOMBRES={'00':'Ballena','03':'Pescado','15':'Ratón','21':'Pájaro','22':'Ataúd','24':'Sapo','34':'Música','35':'Olas','50':'Pan','91':'Tortuga','94':'Carro'};
+const MONTOS=[5,10,15,20,25,30,35,40,45,50,100,150];
+const TIPOS=[{n:'La Diaria',p:'Variable'},{n:'Loto',p:'L 10.00'},{n:'Bingo Express',p:'L 20.00'}];
+let lineas=[],tipoSel=0,numActual=null,montoSel=null,editIdx=null;
 const $=id=>document.getElementById(id);
-function hoyStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function nowHM(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-function fmtFecha(f){const p=f.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-function fmtHora12(h){const p=h.split(':');let H=+p[0];const am=H<12?'AM':'PM';H=H%12||12;return H+':'+p[1]+' '+am;}
-function estadoEn(f,s){
-  if(f>hoyStr())return 'prox';
-  const h=nowHM();
-  if(h<s.abre)return 'prox';
-  if(h>=s.cierra)return 'cerrado';
-  return 'abierto';
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,2000);}
+function pintarGrid(){
+const g=$('grid');g.innerHTML='';
+for(let i=0;i<100;i++){
+const n=String(i).padStart(2,'0');
+const b=document.createElement('button');
+b.textContent=n;
+if(lineas.some(l=>l.num===n))b.classList.add('in');
+b.onclick=()=>abrirSheet(n,null);
+g.appendChild(b);
 }
-function sorteoDe(id){return SORTEOS.find(x=>x.id===id);}
-function totalDe(v){return v.lineas.reduce((a,l)=>a+l.monto,0);}
-function sorteoEnCurso(){return SORTEOS.find(s=>estadoEn(hoyStr(),s)==='abierto')||SORTEOS.find(s=>estadoEn(hoyStr(),s)==='prox')||null;}
-function pintarCaja(){
-  const b=$('btnCaja');const sc=sorteoEnCurso();
-  if(!cajaAbierta){b.textContent='CAJA CERRADA';b.style.background='#fde2e2';b.style.color='#c0392b';}
-  else{b.textContent='CAJA ABIERTA'+(sc?(' · vendiendo '+sc.nombre):'');b.style.background='#d9f3e3';b.style.color='#177a48';}
 }
-function pintarSorteos(){
-  const cont=$('sorteos');cont.innerHTML='';
-  const st={};SORTEOS.forEach(s=>{st[s.id]=estadoEn($('fecha').value,s);});
-  if(st[sel]==='cerrado'){const f=SORTEOS.find(s=>st[s.id]!=='cerrado');if(f)sel=f.id;}
-  SORTEOS.forEach(s=>{
-    const stt=st[s.id];
-    const div=document.createElement('div');
-    div.className='sorteo'+(sel===s.id?' sel':'')+(stt==='cerrado'?' off':'');
-    const txt=stt==='abierto'?'ABIERTO':stt==='cerrado'?'CERRADO':'PRÓXIMO';
-    div.innerHTML='<div><b>'+s.nombre+'</b><div class="nota">'+s.abre+' – '+s.cierra+'</div></div><span class="st '+stt+'">'+txt+'</span>';
-    div.onclick=function(){if(stt!=='cerrado'){sel=s.id;pintarSorteos();}};
-    cont.appendChild(div);
-  });
+function pintarTicket(){
+const t=$('ticket');t.innerHTML='';
+if(!lineas.length)t.innerHTML='<div class="empty">Aún no agregas jugadas. Toca un número del tablero.</div>';
+lineas.forEach((l,i)=>{
+const d=document.createElement('div');
+d.className='trow';
+d.innerHTML='<div class="num">'+l.num+'</div><div class="det"><b>'+l.num+'</b> '+(NOMBRES[l.num]||'')+' · L '+l.monto.toFixed(2)+'</div><button class="ed">✏️</button><button class="del">✕</button>';
+d.querySelector('.ed').onclick=()=>abrirSheet(l.num,i);
+d.querySelector('.del').onclick=()=>{lineas.splice(i,1);pintarTicket();pintarGrid();};
+t.appendChild(d);
+});
+pintarTotal();
 }
-function pintarPanel(){
-  const cont=$('panelSorteos');cont.innerHTML='';
-  SORTEOS.forEach(s=>{
-    const stt=estadoEn(hoyStr(),s);
-    const div=document.createElement('div');
-    div.className='sorteo';div.style.cursor='default';
-    const txt=stt==='abierto'?'ABIERTO':stt==='cerrado'?'CERRADO':'PRÓXIMO';
-    div.innerHTML='<div><b>'+s.nombre+'</b><div class="nota">'+s.abre+' – '+s.cierra+' · en recibo: '+s.horaRecibo+'</div></div><span class="st '+stt+'">'+txt+'</span>';
-    cont.appendChild(div);
-  });
+function pintarTotal(){$('tot').textContent='L '+lineas.reduce((a,l)=>a+l.monto,0).toFixed(2);}
+function pintarTipos(){
+const c=$('tipos');c.innerHTML='';
+TIPOS.forEach((t,i)=>{
+const d=document.createElement('div');
+d.className='tipo'+(i===tipoSel?' sel':'');
+d.innerHTML=t.n+'<small>'+t.p+'</small>';
+d.onclick=()=>{tipoSel=i;pintarTipos();};
+c.appendChild(d);
+});
 }
-function pintarClientes(){
-  const s=$('cliente');
-  s.innerHTML='<option value="">Sin cliente (venta general)</option>'+clientesDemo.map(function(c){return '<option>'+c+'</option>';}).join('')+'<option value="__new">+ Nuevo cliente…</option>';
-  s.value=clienteSel;
+function abrirSheet(num,idx){
+numActual=num;editIdx=idx;montoSel=idx!=null?lineas[idx].monto:null;
+$('sheetNum').textContent=num;
+$('sheetNombre').textContent=(NOMBRES[num]?NOMBRES[num]+' · ':'')+'Número '+num;
+$('otroMonto').value='';
+pintarMontos();
+$('modal').classList.add('open');
 }
-function pintarLineas(){
-  const cont=$('listaLineas');cont.innerHTML='';
-  lineas.forEach(function(l,i){
-    const div=document.createElement('div');
-    div.className='linea';
-    div.innerHTML='<span><b>'+l.num+'</b>'+(NOMBRES[l.num]?' '+NOMBRES[l.num]:'')+' · L '+l.monto.toFixed(2)+'</span><button>✕</button>';
-    div.querySelector('button').onclick=function(){lineas.splice(i,1);pintarLineas();};
-    cont.appendChild(div);
-  });
+function pintarMontos(){
+const c=$('montos');c.innerHTML='';
+MONTOS.forEach(m=>{
+const b=document.createElement('button');
+b.textContent='L '+m;
+if(montoSel===m)b.classList.add('sel');
+b.onclick=()=>{montoSel=m;$('otroMonto').value='';pintarMontos();};
+c.appendChild(b);
+});
 }
-function pintarResumen(){
-  const cont=$('resumen');cont.innerHTML='';
-  const pendientes=ventas.map(function(v,i){return {v:v,i:i};}).filter(function(x){return estadoEn(x.v.fecha,sorteoDe(x.v.sorteoId))!=='cerrado';});
-  pendientes.forEach(function(x){
-    const v=x.v;const s=sorteoDe(v.sorteoId);
-    const row=document.createElement('div');
-    row.className='trow';
-    row.innerHTML='<span><b>'+fmtFecha(v.fecha)+' · '+s.nombre+'</b> · '+(v.cliente||'General')+'</span><span style="font-weight:800;color:#14564a">L '+totalDe(v).toFixed(2)+'</span>';
-    row.onclick=function(){abrirTicket(x.i);};
-    cont.appendChild(row);
-  });
-  if(!pendientes.length)cont.innerHTML='<p class="nota">Sin tickets pendientes. Cuando un sorteo se cierra, su ticket sale de aquí y queda en el Historial.</p>';
-}
-function cen(t){const w=30;if(t.length>=w)return t;return ' '.repeat(Math.floor((w-t.length)/2))+t;}
-function textoRecibo(v){
-  const s=sorteoDe(v.sorteoId);
-  const L=[];
-  L.push(cen('LA DIARIA'));
-  L.push('-'.repeat(30));
-  L.push('Ticket: '+v.codigo);
-  L.push('Sorteo: '+s.nombre+' '+s.horaRecibo);
-  if(v.cliente)L.push('Cliente: '+v.cliente);
-  L.push('Fecha: '+fmtFecha(v.fecha)+'  '+fmtHora12(v.hora));
-  L.push('-'.repeat(30));
-  let total=0;
-  v.lineas.forEach(function(l){total+=l.monto;L.push('   '+l.num+(NOMBRES[l.num]?'  '+NOMBRES[l.num]:'')+'   L '+l.monto.toFixed(2));});
-  L.push('-'.repeat(30));
-  L.push('TOTAL A PAGAR   L '+total.toFixed(2));
-  L.push('-'.repeat(30));
-  L.push(cen('¡Gracias por su compra!'));
-  return L.join('\n');
-}
-function abrirTicket(i){
-  ticketIdx=i;
-  $('ticketRecibo').textContent=textoRecibo(ventas[i]);
-  $('ticketRecibo').style.display='block';
-  $('ticketEdit').style.display='none';
-  $('btnGuardarEdit').style.display='none';
-  $('modalTicket').classList.add('open');
-}
-function pintarEditLineas(){
-  const cont=$('editLineas');cont.innerHTML='';
-  editLineas.forEach(function(l,i){
-    const div=document.createElement('div');
-    div.className='linea';
-    div.innerHTML='<span><b>'+l.num+'</b>'+(NOMBRES[l.num]?' '+NOMBRES[l.num]:'')+' · L '+l.monto.toFixed(2)+'</span><button>✕</button>';
-    div.querySelector('button').onclick=function(){editLineas.splice(i,1);pintarEditLineas();};
-    cont.appendChild(div);
-  });
-}
-$('btnVerRecibo').onclick=function(){
-  $('ticketRecibo').style.display='block';
-  $('ticketEdit').style.display='none';
-  $('btnGuardarEdit').style.display='none';
+$('otroMonto').oninput=e=>{const v=parseFloat(e.target.value);montoSel=!isNaN(v)&&v>0?v:null;};
+$('cancelar').onclick=()=>$('modal').classList.remove('open');
+$('agregar').onclick=()=>{
+if(!montoSel){toast('Elige un monto');return;}
+if(editIdx!=null)lineas[editIdx].monto=montoSel;
+else lineas.push({num:numActual,monto:montoSel});
+$('modal').classList.remove('open');
+pintarTicket();pintarGrid();
+toast(editIdx!=null?'Jugada actualizada ✓':'Número '+numActual+' agregado ✓');
+editIdx=null;
 };
-$('btnEditar').onclick=function(){
-  editLineas=ventas[ticketIdx].lineas.map(function(l){return {num:l.num,monto:l.monto};});
-  pintarEditLineas();
-  $('ticketRecibo').style.display='none';
-  $('ticketEdit').style.display='block';
-  $('btnGuardarEdit').style.display='block';
+$('facturar').onclick=()=>{
+if(!lineas.length){toast('Agrega al menos un número');return;}
+toast('Facturado '+lineas.length+' jugada(s) · L '+lineas.reduce((a,l)=>a+l.monto,0).toFixed(2)+' ✓');
+lineas=[];pintarTicket();pintarGrid();
 };
-$('eAdd').onclick=function(){
-  const n=$('eNum').value.trim();const m=parseFloat($('eMonto').value);
-  if(!n||isNaN(m)||m<=0){toast('Escribe número y precio');return;}
-  editLineas.push({num:n.padStart(2,'0'),monto:m});
-  $('eNum').value='';$('eMonto').value='';
-  pintarEditLineas();
-};
-$('btnGuardarEdit').onclick=function(){
-  if(!editLineas.length){toast('El ticket no puede quedar vacío');return;}
-  ventas[ticketIdx].lineas=editLineas.slice();
-  $('ticketRecibo').textContent=textoRecibo(ventas[ticketIdx]);
-  $('btnVerRecibo').onclick();
-  pintarResumen();
-  toast('Ticket actualizado ✓');
-};
-$('cerrarTicket').onclick=function(){$('modalTicket').classList.remove('open');};
-function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(function(){t.style.opacity=0;},2200);}
-$('fecha').onchange=function(){
-  if($('fecha').value<hoyStr()){$('fecha').value=hoyStr();toast('El pasado está bloqueado: puesto hoy');}
-  pintarSorteos();
-};
-$('btnCaja').onclick=function(){cajaAbierta=!cajaAbierta;pintarCaja();};
-$('cliente').onchange=function(){
-  if($('cliente').value==='__new'){$('nuevoClienteBox').style.display='flex';}
-  else{clienteSel=$('cliente').value;$('nuevoClienteBox').style.display='none';}
-};
-$('guardarCliente').onclick=function(){
-  const n=$('nuevoCliente').value.trim();
-  if(!n)return;
-  clientesDemo.push(n);clienteSel=n;
-  $('nuevoCliente').value='';$('nuevoClienteBox').style.display='none';
-  pintarClientes();toast('Cliente '+n+' agregado');
-};
-$('agregarNum').onclick=function(){
-  const n=$('num').value.trim();const m=parseFloat($('monto').value);
-  if(!n||isNaN(m)||m<=0){toast('Escribe un número y su precio');return;}
-  lineas.push({num:n.padStart(2,'0'),monto:m});
-  $('num').value='';$('monto').value='';
-  pintarLineas();
-};
-$('facturar').onclick=function(){
-  if(!cajaAbierta){toast('La caja está cerrada: ábrela para vender');return;}
-  if(!lineas.length){toast('Agrega al menos un número al ticket');return;}
-  const v={codigo:'TK-DEMO'+Math.floor(1000+Math.random()*9000),sorteoId:sel,fecha:$('fecha').value,hora:nowHM(),cliente:clienteSel,lineas:lineas.slice()};
-  ventas.push(v);
-  lineas=[];pintarLineas();
-  $('reciboTxt').textContent=textoRecibo(v);
-  $('modalRecibo').classList.add('open');
-  pintarResumen();
-};
-$('cerrarRecibo').onclick=function(){$('modalRecibo').classList.remove('open');};
-$('fecha').min=hoyStr();$('fecha').value=hoyStr();
-setInterval(function(){pintarCaja();pintarSorteos();pintarPanel();pintarResumen();},30000);
-pintarCaja();pintarSorteos();pintarPanel();pintarClientes();pintarLineas();pintarResumen();
+pintarGrid();pintarTicket();pintarTipos();
 </script>
 </body>
 </html>
