@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v6 · Historial de pagos</title>
+<title>Demo v7 · Historial de pagos</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -24,15 +24,16 @@ header h1{font-size:17px;margin:0;flex:1}
 .mini small{display:block;color:#8a94a0;font-size:10px;font-weight:700;text-transform:uppercase}
 .mini b{font-size:13px}
 .row input{width:100%;border:1px solid #d7dce2;border-radius:12px;padding:12px;font-size:15px}
-.chips{display:flex;gap:6px;margin:8px 0}
-.chips button{border:0;background:#fdf6e3;color:#92400e;border-radius:10px;padding:8px 12px;font-weight:700;font-size:12px}
-.chips button.sel{background:var(--verde);color:#fff}
-.btn{width:100%;border:0;background:var(--verde);color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:14px}
+.btn{width:100%;border:0;background:var(--verde);color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:14px;margin-top:8px}
+.listaScroll{max-height:216px;overflow-y:auto}
 .pay{display:flex;align-items:center;gap:10px;background:#f2f5f7;border-radius:14px;padding:12px;margin-bottom:8px}
 .pay .d{flex:1}
 .pay .d b{font-size:14px}
 .pay .d small{display:block;color:#8a94a0;font-size:11px}
 .pay .m{font-weight:800;color:var(--verde2);font-size:15px}
+.totalRow{display:flex;justify-content:space-between;align-items:center;background:#e8f3ee;border-radius:12px;padding:12px;margin-bottom:8px}
+.totalRow small{color:#8a94a0;font-weight:700;font-size:10px;text-transform:uppercase}
+.totalRow b{color:var(--verde2);font-size:18px}
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60}
 </style>
 </head>
@@ -51,19 +52,18 @@ header h1{font-size:17px;margin:0;flex:1}
 <div class="card">
 <h2>Registrar pago</h2>
 <div class="row"><input id="monto" type="number" placeholder="Monto del pago (L)"></div>
-<div class="chips" id="chips"></div>
 <button class="btn" id="registrar">+ Registrar pago</button>
 </div>
 
 <div class="card">
-<h2>Pagos realizados</h2>
-<div id="lista"></div>
+<h2>Pagos realizados · más reciente primero</h2>
+<div class="listaScroll" id="lista"></div>
 </div>
 
 <div class="card">
-<h2>Premios ganados · recomendación</h2>
-<div class="pay"><div class="d"><b>Nº 86 Rieles</b><small>13/08 · premio pagado</small></div><div class="m">L 3,250</div></div>
-<p style="font-size:11px;color:#8a94a0;margin:6px 0 0">Aquí saldrían automático los premios que le pagues con el botón "Pagar premio" de Caja — así ves cuánto te ha ganado cada cliente.</p>
+<h2>Premios ganados</h2>
+<div class="totalRow"><small>Total premios ganados</small><b id="totPremios">L 0</b></div>
+<div id="premios"></div>
 </div>
 
 <div id="toast"></div>
@@ -72,7 +72,15 @@ let saldo=300;
 let pagos=[
  {f:'14/08/2026',h:'7:00 PM',m:300,s:300},
  {f:'27/07/2026',h:'6:00 PM',m:200,s:600},
- {f:'14/07/2026',h:'4:00 PM',m:300,s:800}
+ {f:'14/07/2026',h:'4:00 PM',m:300,s:800},
+ {f:'02/07/2026',h:'5:00 PM',m:200,s:1000},
+ {f:'20/06/2026',h:'6:00 PM',m:500,s:1200},
+ {f:'05/06/2026',h:'4:00 PM',m:300,s:1500}
+];
+const premios=[
+ {n:'Nº 86 Rieles',f:'13/08',m:3250},
+ {n:'Nº 12 Gallo',f:'02/08',m:7000},
+ {n:'Nº 45 Burro',f:'19/07',m:9750}
 ];
 const $=id=>document.getElementById(id);
 function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1800);}
@@ -88,13 +96,15 @@ function pintar(){
   d.innerHTML='<div class="d"><b>'+p.f+' · '+p.h+'</b><small>Quedó debiendo: L '+p.s+'</small></div><div class="m">+L '+p.m+'</div>';
   l.appendChild(d);
  });
+ $('totPremios').textContent='L '+premios.reduce((a,p)=>a+p.m,0).toLocaleString();
+ const pr=$('premios');pr.innerHTML='';
+ premios.forEach(p=>{
+  const d=document.createElement('div');
+  d.className='pay';
+  d.innerHTML='<div class="d"><b>'+p.n+'</b><small>'+p.f+' · premio pagado</small></div><div class="m">L '+p.m.toLocaleString()+'</div>';
+  pr.appendChild(d);
+ });
 }
-[50,100,200,500].forEach(m=>{
- const b=document.createElement('button');
- b.textContent='L '+m;
- b.onclick=()=>{$('monto').value=m;document.querySelectorAll('.chips button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
- $('chips').appendChild(b);
-});
 $('registrar').onclick=()=>{
  const m=parseFloat($('monto').value);
  if(!m||m<=0){toast('Escribe un monto');return;}
