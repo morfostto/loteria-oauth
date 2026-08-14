@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v8 · Cliente + Historial de pagos</title>
+<title>Demo v9 · Cliente + Historial de pagos</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -21,14 +21,16 @@ header h1{font-size:17px;margin:0;flex:1}
 .big.ok p{color:var(--verde2)}
 .big small{color:#8a94a0;font-weight:700;font-size:10px;text-transform:uppercase}
 .res{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.mini{background:#f2f5f7;border-radius:12px;padding:10px}
+.mini{background:#f2f5f7;border-radius:12px;padding:10px;text-align:left}
 .mini small{display:block;color:#8a94a0;font-size:10px;font-weight:700;text-transform:uppercase}
 .mini b{font-size:13px}
+.miniBtn{border:2px solid var(--verde);background:#e8f3ee;color:var(--verde);font-weight:800;cursor:pointer}
+.miniBtn small{color:var(--verde2)}
+.miniBtn b{color:var(--verde);font-size:12px}
 .row{display:flex;gap:8px}
 .row input{flex:1;border:1px solid #d7dce2;border-radius:12px;padding:12px;font-size:15px}
 .btnVerde{border:0;background:var(--verde2);color:#fff;border-radius:12px;padding:12px 18px;font-weight:800;font-size:14px}
 .btnFull{width:100%;border:0;background:var(--verde);color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:14px;margin-top:8px}
-.btnHist{width:100%;border:2px solid var(--verde);background:#e8f3ee;color:var(--verde);border-radius:14px;padding:13px;font-weight:800;font-size:14px;margin-top:10px}
 .scroll3{max-height:208px;overflow-y:auto}
 .scrollBig{max-height:280px;overflow-y:auto}
 .pay{display:flex;align-items:center;gap:10px;background:#f2f5f7;border-radius:14px;padding:12px;margin-bottom:8px;height:64px}
@@ -47,9 +49,9 @@ header h1{font-size:17px;margin:0;flex:1}
 </head>
 <body>
 
-<!-- PANTALLA 1: FICHA DEL CLIENTE (completa) -->
+<!-- PANTALLA 1: FICHA DEL CLIENTE -->
 <div id="s1" class="screen on">
-<header><button class="back" onclick="history.back()">←</button><h1>Vilma</h1><div class="av">V</div></header>
+<header><button class="back">←</button><h1>Vilma</h1><div class="av">V</div></header>
 <p class="sub">331 compra(s) · L 75,220.00 en total</p>
 
 <div class="card">
@@ -58,14 +60,13 @@ header h1{font-size:17px;margin:0;flex:1}
 <div class="mini"><small>Ventas totales</small><b>L 75,220</b></div>
 <div class="mini"><small>Contado</small><b>L 7,650</b></div>
 <div class="mini"><small>Crédito</small><b>L 67,570</b></div>
-<div class="mini"><small>Total pagado</small><b id="totalPagado">—</b></div>
+<button class="mini miniBtn" id="verHistorial"><small>Historial de pagos</small><b id="ultimoMini">Último: —</b></button>
 </div>
 </div>
 
 <div class="card">
 <h2>Abonar a cuenta</h2>
 <div class="row"><input id="montoAbono" type="number" placeholder="Monto del abono (L)"><button class="btnVerde" id="abonar">+ Abonar</button></div>
-<button class="btnHist" id="verHistorial">🕓 Historial de pagos</button>
 </div>
 
 <div class="card">
@@ -148,8 +149,10 @@ function pintar(){
  $('saldo').textContent=sTxt;$('saldo2').textContent=sTxt;
  $('saldoBox').classList.toggle('ok',saldo<=0);$('saldoBox2').classList.toggle('ok',saldo<=0);
  const tp='L '+pagos.reduce((a,p)=>a+p.m,0).toLocaleString();
- $('totalPagado').textContent=tp;$('totalPagado2').textContent=tp;
- $('ultimo').textContent=pagos.length?('L '+pagos[0].m+' · '+pagos[0].f.slice(0,5)+' '+pagos[0].h):'—';
+ $('totalPagado2').textContent=tp;
+ const u=pagos.length?('L '+pagos[0].m+' · '+pagos[0].f.slice(0,5)+' '+pagos[0].h):'—';
+ $('ultimo').textContent=u;
+ $('ultimoMini').textContent='Último: '+u;
  const l=$('lista');l.innerHTML='';
  pagos.forEach(p=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+p.f+' · '+p.h+'</b><small>Quedó debiendo: L '+p.s+'</small></div><div class="m">+L '+p.m+'</div>';l.appendChild(d);});
  const pr=$('premios');pr.innerHTML='';
