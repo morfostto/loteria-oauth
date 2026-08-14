@@ -3,170 +3,111 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v5 · Nueva Venta rediseñada</title>
+<title>Demo v6 · Historial de pagos</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--fondo);color:#111;padding-bottom:95px}
+body{margin:0;background:var(--fondo);color:#111}
 header{background:var(--verde);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
-header h1{font-size:17px;margin:0;flex:1}
 .back{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--verde);display:flex;align-items:center;justify-content:center;font-size:18px;border:0}
-.card{background:#fff;margin:10px 12px;border-radius:16px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.card h2{font-size:11px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
-.chips{display:flex;gap:8px;margin:10px 12px 0}
-.chip{flex:1;background:#fff;border-radius:14px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700}
-.chip small{display:block;color:#8a94a0;font-size:9px;font-weight:700;text-transform:uppercase}
-.trow{display:flex;align-items:center;gap:8px;background:#f2f5f7;border-radius:12px;padding:8px 10px;margin-bottom:6px}
-.trow .num{width:34px;height:34px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.trow .det{flex:1;font-size:13px}
-.trow button{border:0;border-radius:8px;padding:6px 9px;font-weight:700;font-size:12px}
-.trow .ed{background:#e5e9f5;color:#3b5bdb}
-.trow .del{background:#fde2e2;color:#c0392b}
-.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
-.grid button{aspect-ratio:1;border:0;border-radius:10px;background:#eceff2;font-weight:700;font-size:12px;color:#333}
-.grid button.in{background:var(--verde);color:#fff}
-.grid button:active{transform:scale(.94)}
-.tipos{display:flex;gap:8px;overflow-x:auto}
-.tipo{flex-shrink:0;border:2px solid transparent;border-radius:12px;padding:8px 14px;background:#f2f5f7;font-size:12px;font-weight:700;text-align:center}
-.tipo small{display:block;color:#8a94a0;font-weight:600}
-.tipo.sel{border-color:var(--verde);background:#e8f3ee}
-.bottombar{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -2px 10px rgba(0,0,0,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;z-index:20}
-.bottombar select{flex:1;border:1px solid #d7dce2;border-radius:12px;padding:10px;font-size:13px;background:#fff}
-.bottombar .tot{font-weight:800;color:var(--verde2);font-size:15px;min-width:64px;text-align:right}
-.bottombar .fact{background:var(--verde);color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:800;font-size:14px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:50}
-.modal.open{display:flex}
-.sheet{background:#fff;width:100%;max-width:420px;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
-.sheet .head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.sheet .bignum{width:46px;height:46px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
-.montos{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.montos button{border:0;border-radius:12px;padding:10px 0;background:#fdf6e3;color:#92400e;font-weight:700;font-size:13px}
-.montos button.sel{background:var(--verde);color:#fff}
-.otro input{width:100%;border:1px solid #d7dce2;border-radius:12px;padding:10px;font-size:14px;margin-top:10px}
-.acts{display:flex;gap:8px;margin-top:12px}
-.acts button{flex:1;border:0;border-radius:12px;padding:13px;font-weight:800;font-size:14px}
-.ok{background:var(--verde);color:#fff}
-.cancel{background:#eef1f4;color:#555}
-.empty{color:#98a2ae;font-size:13px;text-align:center;padding:8px 0}
-#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:60}
+header h1{font-size:17px;margin:0;flex:1}
+.av{width:38px;height:38px;border-radius:50%;background:#e8f3ee;color:var(--verde);font-weight:800;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;margin:10px 12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card h2{font-size:11px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
+.big{background:#fdecec;border-radius:14px;padding:12px;text-align:center;margin-bottom:8px}
+.big.ok{background:#e8f3ee}
+.big p{margin:0;font-size:26px;font-weight:800;color:#c0392b}
+.big.ok p{color:var(--verde2)}
+.big small{color:#8a94a0;font-weight:700;font-size:10px;text-transform:uppercase}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini{background:#f2f5f7;border-radius:12px;padding:10px}
+.mini small{display:block;color:#8a94a0;font-size:10px;font-weight:700;text-transform:uppercase}
+.mini b{font-size:13px}
+.row input{width:100%;border:1px solid #d7dce2;border-radius:12px;padding:12px;font-size:15px}
+.chips{display:flex;gap:6px;margin:8px 0}
+.chips button{border:0;background:#fdf6e3;color:#92400e;border-radius:10px;padding:8px 12px;font-weight:700;font-size:12px}
+.chips button.sel{background:var(--verde);color:#fff}
+.btn{width:100%;border:0;background:var(--verde);color:#fff;border-radius:14px;padding:14px;font-weight:800;font-size:14px}
+.pay{display:flex;align-items:center;gap:10px;background:#f2f5f7;border-radius:14px;padding:12px;margin-bottom:8px}
+.pay .d{flex:1}
+.pay .d b{font-size:14px}
+.pay .d small{display:block;color:#8a94a0;font-size:11px}
+.pay .m{font-weight:800;color:var(--verde2);font-size:15px}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60}
 </style>
 </head>
 <body>
-<header><button class="back">←</button><h1>Nueva Venta</h1></header>
+<header><button class="back">←</button><h1>Historial de pagos</h1><div class="av">E</div></header>
 
-<div class="chips">
-<div class="chip"><span><small>Día</small>08/08/2026</span><span>▾</span></div>
-<div class="chip"><span><small>Sorteo</small>Noche · 08/08</span><span>▾</span></div>
+<div class="card">
+<h2>Elvia · resumen</h2>
+<div class="big" id="saldoBox"><small>Saldo pendiente</small><p id="saldo">L 300.00</p></div>
+<div class="res">
+<div class="mini"><small>Último pago</small><b id="ultimo">—</b></div>
+<div class="mini"><small>Total pagado</small><b id="totalPagado">—</b></div>
+</div>
 </div>
 
 <div class="card">
-<h2>Jugadas agregadas</h2>
-<div id="ticket"></div>
+<h2>Registrar pago</h2>
+<div class="row"><input id="monto" type="number" placeholder="Monto del pago (L)"></div>
+<div class="chips" id="chips"></div>
+<button class="btn" id="registrar">+ Registrar pago</button>
 </div>
 
 <div class="card">
-<h2>Tablero 00–99 · toca un número</h2>
-<div class="grid" id="grid"></div>
+<h2>Pagos realizados</h2>
+<div id="lista"></div>
 </div>
 
 <div class="card">
-<h2>Tipo de juego</h2>
-<div class="tipos" id="tipos"></div>
+<h2>Premios ganados · recomendación</h2>
+<div class="pay"><div class="d"><b>Nº 86 Rieles</b><small>13/08 · premio pagado</small></div><div class="m">L 3,250</div></div>
+<p style="font-size:11px;color:#8a94a0;margin:6px 0 0">Aquí saldrían automático los premios que le pagues con el botón "Pagar premio" de Caja — así ves cuánto te ha ganado cada cliente.</p>
 </div>
 
-<div class="bottombar">
-<select id="cliente"><option value="">Cliente (opcional)</option><option>Yalil</option><option>Eva</option><option>David</option></select>
-<div class="tot" id="tot">L 0.00</div>
-<button class="fact" id="facturar">FACTURAR</button>
-</div>
-
-<div class="modal" id="modal">
-<div class="sheet">
-<div class="head"><div class="bignum" id="sheetNum">35</div><div><b id="sheetNombre">Número 35</b><div style="font-size:12px;color:#8a94a0">Elige el monto de venta</div></div></div>
-<div class="montos" id="montos"></div>
-<div class="otro"><input id="otroMonto" type="number" placeholder="Otro monto (L)"></div>
-<div class="acts"><button class="cancel" id="cancelar">Cancelar</button><button class="ok" id="agregar">Agregar</button></div>
-</div>
-</div>
 <div id="toast"></div>
-
 <script>
-const NOMBRES={'00':'Ballena','03':'Pescado','15':'Ratón','21':'Pájaro','22':'Ataúd','24':'Sapo','34':'Música','35':'Olas','50':'Pan','91':'Tortuga','94':'Carro'};
-const MONTOS=[5,10,15,20,25,30,35,40,45,50,100,150];
-const TIPOS=[{n:'La Diaria',p:'Variable'},{n:'Loto',p:'L 10.00'},{n:'Bingo Express',p:'L 20.00'}];
-let lineas=[],tipoSel=0,numActual=null,montoSel=null,editIdx=null;
+let saldo=300;
+let pagos=[
+ {f:'14/08/2026',h:'7:00 PM',m:300,s:300},
+ {f:'27/07/2026',h:'6:00 PM',m:200,s:600},
+ {f:'14/07/2026',h:'4:00 PM',m:300,s:800}
+];
 const $=id=>document.getElementById(id);
-function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,2000);}
-function pintarGrid(){
-const g=$('grid');g.innerHTML='';
-for(let i=0;i<100;i++){
-const n=String(i).padStart(2,'0');
-const b=document.createElement('button');
-b.textContent=n;
-if(lineas.some(l=>l.num===n))b.classList.add('in');
-b.onclick=()=>abrirSheet(n,null);
-g.appendChild(b);
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1800);}
+function pintar(){
+ $('saldo').textContent='L '+saldo.toFixed(2);
+ $('saldoBox').classList.toggle('ok',saldo<=0);
+ $('totalPagado').textContent='L '+pagos.reduce((a,p)=>a+p.m,0).toLocaleString();
+ $('ultimo').textContent=pagos.length?('L '+pagos[0].m+' · '+pagos[0].f.slice(0,5)+' '+pagos[0].h):'—';
+ const l=$('lista');l.innerHTML='';
+ pagos.forEach(p=>{
+  const d=document.createElement('div');
+  d.className='pay';
+  d.innerHTML='<div class="d"><b>'+p.f+' · '+p.h+'</b><small>Quedó debiendo: L '+p.s+'</small></div><div class="m">+L '+p.m+'</div>';
+  l.appendChild(d);
+ });
 }
-}
-function pintarTicket(){
-const t=$('ticket');t.innerHTML='';
-if(!lineas.length)t.innerHTML='<div class="empty">Aún no agregas jugadas. Toca un número del tablero.</div>';
-lineas.forEach((l,i)=>{
-const d=document.createElement('div');
-d.className='trow';
-d.innerHTML='<div class="num">'+l.num+'</div><div class="det"><b>'+l.num+'</b> '+(NOMBRES[l.num]||'')+' · L '+l.monto.toFixed(2)+'</div><button class="ed">✏️</button><button class="del">✕</button>';
-d.querySelector('.ed').onclick=()=>abrirSheet(l.num,i);
-d.querySelector('.del').onclick=()=>{lineas.splice(i,1);pintarTicket();pintarGrid();};
-t.appendChild(d);
+[50,100,200,500].forEach(m=>{
+ const b=document.createElement('button');
+ b.textContent='L '+m;
+ b.onclick=()=>{$('monto').value=m;document.querySelectorAll('.chips button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+ $('chips').appendChild(b);
 });
-pintarTotal();
-}
-function pintarTotal(){$('tot').textContent='L '+lineas.reduce((a,l)=>a+l.monto,0).toFixed(2);}
-function pintarTipos(){
-const c=$('tipos');c.innerHTML='';
-TIPOS.forEach((t,i)=>{
-const d=document.createElement('div');
-d.className='tipo'+(i===tipoSel?' sel':'');
-d.innerHTML=t.n+'<small>'+t.p+'</small>';
-d.onclick=()=>{tipoSel=i;pintarTipos();};
-c.appendChild(d);
-});
-}
-function abrirSheet(num,idx){
-numActual=num;editIdx=idx;montoSel=idx!=null?lineas[idx].monto:null;
-$('sheetNum').textContent=num;
-$('sheetNombre').textContent=(NOMBRES[num]?NOMBRES[num]+' · ':'')+'Número '+num;
-$('otroMonto').value='';
-pintarMontos();
-$('modal').classList.add('open');
-}
-function pintarMontos(){
-const c=$('montos');c.innerHTML='';
-MONTOS.forEach(m=>{
-const b=document.createElement('button');
-b.textContent='L '+m;
-if(montoSel===m)b.classList.add('sel');
-b.onclick=()=>{montoSel=m;$('otroMonto').value='';pintarMontos();};
-c.appendChild(b);
-});
-}
-$('otroMonto').oninput=e=>{const v=parseFloat(e.target.value);montoSel=!isNaN(v)&&v>0?v:null;};
-$('cancelar').onclick=()=>$('modal').classList.remove('open');
-$('agregar').onclick=()=>{
-if(!montoSel){toast('Elige un monto');return;}
-if(editIdx!=null)lineas[editIdx].monto=montoSel;
-else lineas.push({num:numActual,monto:montoSel});
-$('modal').classList.remove('open');
-pintarTicket();pintarGrid();
-toast(editIdx!=null?'Jugada actualizada ✓':'Número '+numActual+' agregado ✓');
-editIdx=null;
+$('registrar').onclick=()=>{
+ const m=parseFloat($('monto').value);
+ if(!m||m<=0){toast('Escribe un monto');return;}
+ saldo=Math.max(0,saldo-m);
+ const a=new Date();
+ const f=String(a.getDate()).padStart(2,'0')+'/'+String(a.getMonth()+1).padStart(2,'0')+'/'+a.getFullYear();
+ const h=a.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+ pagos.unshift({f,h,m,s:saldo});
+ $('monto').value='';
+ pintar();
+ toast('Pago registrado: L '+m+' ✓');
 };
-$('facturar').onclick=()=>{
-if(!lineas.length){toast('Agrega al menos un número');return;}
-toast('Facturado '+lineas.length+' jugada(s) · L '+lineas.reduce((a,l)=>a+l.monto,0).toFixed(2)+' ✓');
-lineas=[];pintarTicket();pintarGrid();
-};
-pintarGrid();pintarTicket();pintarTipos();
+pintar();
 </script>
 </body>
 </html>
