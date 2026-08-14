@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v9 · Cliente + Historial de pagos</title>
+<title>Demo v10 · Clientes + Ficha + Historial</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -11,10 +11,25 @@ body{margin:0;background:var(--fondo);color:#111}
 header{background:var(--verde);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
 .back{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--verde);display:flex;align-items:center;justify-content:center;font-size:18px;border:0}
 header h1{font-size:17px;margin:0;flex:1}
-.av{width:38px;height:38px;border-radius:50%;background:#e8f3ee;color:var(--verde);font-weight:800;display:flex;align-items:center;justify-content:center}
+.plus{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--verde);font-size:20px;font-weight:800;border:0}
 .sub{margin:10px 12px 0;color:#5b6570;font-size:13px;font-weight:600}
 .card{background:#fff;margin:10px 12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .card h2{font-size:11px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.5px;color:#8a94a0}
+.search{margin:10px 12px 0}
+.search input{width:100%;border:0;background:#fff;border-radius:14px;padding:13px 16px;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sum{display:flex;gap:8px;padding:10px}
+.sum div{flex:1;background:#f2f5f7;border-radius:12px;padding:10px;text-align:center}
+.sum small{display:block;color:#8a94a0;font-size:9px;font-weight:700;text-transform:uppercase}
+.sum b{font-size:15px;color:var(--verde2)}
+.cli{display:flex;align-items:center;gap:8px;padding:13px 14px;margin-top:0}
+.cli .inf{flex:1;min-width:0}
+.cli .inf b{font-size:16px}
+.cli .inf small{display:block;color:#8a94a0;font-size:12px;margin:2px 0}
+.tagSaldo{display:inline-block;background:#fdecec;color:#c0392b;font-size:10px;font-weight:800;border-radius:8px;padding:3px 8px}
+.tagSaldo.ok{background:#e8f3ee;color:var(--verde2)}
+.iconBtn{width:38px;height:38px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.iconBtn.ed{background:#eef1f4;color:#5b6570}
+.iconBtn.del{background:#fdecec;color:#c0392b}
 .big{background:#fdecec;border-radius:14px;padding:12px;text-align:center;margin-bottom:8px}
 .big.ok{background:#e8f3ee}
 .big p{margin:0;font-size:26px;font-weight:800;color:#c0392b}
@@ -24,9 +39,9 @@ header h1{font-size:17px;margin:0;flex:1}
 .mini{background:#f2f5f7;border-radius:12px;padding:10px;text-align:left}
 .mini small{display:block;color:#8a94a0;font-size:10px;font-weight:700;text-transform:uppercase}
 .mini b{font-size:13px}
-.miniBtn{border:2px solid var(--verde);background:#e8f3ee;color:var(--verde);font-weight:800;cursor:pointer}
+.miniBtn{border:2px solid var(--verde);background:#e8f3ee;cursor:pointer}
 .miniBtn small{color:var(--verde2)}
-.miniBtn b{color:var(--verde);font-size:12px}
+.miniBtn b{color:var(--verde);font-size:11px}
 .row{display:flex;gap:8px}
 .row input{flex:1;border:1px solid #d7dce2;border-radius:12px;padding:12px;font-size:15px}
 .btnVerde{border:0;background:var(--verde2);color:#fff;border-radius:12px;padding:12px 18px;font-weight:800;font-size:14px}
@@ -49,56 +64,60 @@ header h1{font-size:17px;margin:0;flex:1}
 </head>
 <body>
 
-<!-- PANTALLA 1: FICHA DEL CLIENTE -->
+<!-- PANTALLA 1: CLIENTES -->
 <div id="s1" class="screen on">
-<header><button class="back">←</button><h1>Vilma</h1><div class="av">V</div></header>
-<p class="sub">331 compra(s) · L 75,220.00 en total</p>
+<header><button class="back">←</button><h1>Clientes</h1><button class="plus" id="nuevo">+</button></header>
+<div class="search"><input id="buscar" placeholder="Buscar cliente..."></div>
+<div class="card sum">
+<div><small>Por cobrar</small><b id="porCobrar">—</b></div>
+<div><small>Con saldo</small><b id="conSaldo">—</b></div>
+</div>
+<div id="listaCli"></div>
+</div>
 
+<!-- PANTALLA 2: FICHA -->
+<div id="s2" class="screen">
+<header><button class="back" id="v2">←</button><h1 id="t2">Cliente</h1></header>
+<p class="sub" id="sub2"></p>
 <div class="card">
-<div class="big" id="saldoBox"><small>Saldo pendiente</small><p id="saldo">L 690.00</p></div>
+<div class="big" id="saldoBox"><small>Saldo pendiente</small><p id="saldo">—</p></div>
 <div class="res">
-<div class="mini"><small>Ventas totales</small><b>L 75,220</b></div>
-<div class="mini"><small>Contado</small><b>L 7,650</b></div>
-<div class="mini"><small>Crédito</small><b>L 67,570</b></div>
+<div class="mini"><small>Ventas totales</small><b id="vTot">—</b></div>
+<div class="mini"><small>Contado</small><b id="vCo">—</b></div>
+<div class="mini"><small>Crédito</small><b id="vCr">—</b></div>
 <button class="mini miniBtn" id="verHistorial"><small>Historial de pagos</small><b id="ultimoMini">Último: —</b></button>
 </div>
 </div>
-
 <div class="card">
 <h2>Abonar a cuenta</h2>
 <div class="row"><input id="montoAbono" type="number" placeholder="Monto del abono (L)"><button class="btnVerde" id="abonar">+ Abonar</button></div>
 </div>
-
 <div class="card">
 <h2>Historial completo · ventas</h2>
 <div class="scrollBig" id="ventas"></div>
 </div>
 </div>
 
-<!-- PANTALLA 2: HISTORIAL DE PAGOS -->
-<div id="s2" class="screen">
-<header><button class="back" id="volver">←</button><h1>Historial de pagos</h1><div class="av">V</div></header>
-
+<!-- PANTALLA 3: HISTORIAL DE PAGOS -->
+<div id="s3" class="screen">
+<header><button class="back" id="v3">←</button><h1>Historial de pagos</h1></header>
 <div class="card">
-<h2>Vilma · resumen</h2>
-<div class="big" id="saldoBox2"><small>Saldo pendiente</small><p id="saldo2">L 690.00</p></div>
+<h2 id="t3">Resumen</h2>
+<div class="big" id="saldoBox2"><small>Saldo pendiente</small><p id="saldo2">—</p></div>
 <div class="res">
 <div class="mini"><small>Último pago</small><b id="ultimo">—</b></div>
-<div class="mini"><small>Total pagado</small><b id="totalPagado2">—</b></div>
+<div class="mini"><small>Total pagado</small><b id="totalPagado">—</b></div>
 </div>
 </div>
-
 <div class="card">
 <h2>Registrar pago</h2>
 <div class="row"><input id="montoPago" type="number" placeholder="Monto del pago (L)"></div>
 <button class="btnFull" id="registrar">+ Registrar pago</button>
 </div>
-
 <div class="card">
 <h2>Pagos realizados · más reciente primero</h2>
 <div class="scroll3" id="lista"></div>
 </div>
-
 <div class="card">
 <h2>Premios ganados</h2>
 <div class="totalRow"><small>Total premios ganados</small><b id="totPremios">L 0</b></div>
@@ -108,60 +127,77 @@ header h1{font-size:17px;margin:0;flex:1}
 
 <div id="toast"></div>
 <script>
-let saldo=690;
-let pagos=[
- {f:'14/08/2026',h:'7:00 PM',m:300,s:690},
- {f:'27/07/2026',h:'6:00 PM',m:200,s:990},
- {f:'14/07/2026',h:'4:00 PM',m:300,s:1190},
- {f:'02/07/2026',h:'5:00 PM',m:200,s:1490}
-];
-const premios=[
- {n:'Nº 86 Rieles',f:'13/08',s:'Noche',m:3250},
- {n:'Nº 12 Gallo',f:'02/08',s:'Mañana',m:7000},
- {n:'Nº 45 Burro',f:'19/07',s:'Tarde',m:9750},
- {n:'Nº 07 Perro',f:'05/07',s:'Noche',m:1500}
+const clientes=[
+ {n:'Vilma',c:332,t:75610,co:7650,cr:67960,s:390,pagos:[{f:'14/08/2026',h:'7:00 PM',m:300,s:390},{f:'27/07/2026',h:'6:00 PM',m:200,s:690},{f:'14/07/2026',h:'4:00 PM',m:300,s:890}],premios:[{n:'Nº 86 Rieles',f:'13/08',s:'Noche',m:3250},{n:'Nº 12 Gallo',f:'02/08',s:'Mañana',m:7000}]},
+ {n:'Diosinda',c:168,t:9980,co:5000,cr:4980,s:240,pagos:[{f:'10/08/2026',h:'5:00 PM',m:200,s:240}],premios:[]},
+ {n:'Yobany',c:100,t:9210,co:6000,cr:3210,s:200,pagos:[],premios:[]},
+ {n:'Michel',c:23,t:1145,co:800,cr:345,s:40,pagos:[],premios:[]},
+ {n:'Elvia',c:130,t:5815,co:4000,cr:1815,s:25,pagos:[{f:'13/08/2026',h:'6:00 PM',m:100,s:25}],premios:[{n:'Nº 45 Burro',f:'19/07',s:'Tarde',m:9750}]},
+ {n:'Juan',c:12,t:600,co:600,cr:0,s:0,pagos:[{f:'10/08/2026',h:'5:00 PM',m:600,s:0}],premios:[]}
 ];
 const ventas=[
- {c:'TK-EF2M8KYX-4GS3',d:'Tarde · 2026-08-14',m:50,cr:false},
  {c:'TK-TSTX2Q2Z-EHLV',d:'Mañana · 2026-08-14',m:670,cr:true},
  {c:'TK-MXM8W7LW-GX6M',d:'Mañana · 2026-08-14',m:20,cr:true},
  {c:'TK-9L2HU2BL-LCZN',d:'Mañana · 2026-08-14',m:95,cr:false},
  {c:'TK-81KFDCK9-TZWN',d:'Mañana · 2026-08-14',m:40,cr:false}
 ];
+let sel=null;
 const $=id=>document.getElementById(id);
+function fmt(n){return 'L '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1800);}
 function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on');window.scrollTo(0,0);}
-$('verHistorial').onclick=()=>go(2);
-$('volver').onclick=()=>go(1);
+function pintarLista(){
+ const q=$('buscar').value.toLowerCase();
+ const l=$('listaCli');l.innerHTML='';
+ [...clientes].sort((a,b)=>b.s-a.s).filter(c=>c.n.toLowerCase().includes(q)).forEach(c=>{
+  const d=document.createElement('div');
+  d.className='card cli';
+  d.innerHTML='<div class="inf"><b>'+c.n+'</b><small>'+c.c+' compras · '+fmt(c.t)+'</small>'+(c.s>0?'<span class="tagSaldo">Saldo: '+fmt(c.s)+'</span>':'<span class="tagSaldo ok">Al día ✓</span>')+'</div><button class="iconBtn ed">✎</button><button class="iconBtn del">🗑</button>';
+  d.querySelector('.ed').onclick=()=>toast('Editar cliente (demo)');
+  d.querySelector('.del').onclick=()=>toast('Eliminar cliente (demo)');
+  d.querySelector('.inf').onclick=()=>{sel=c;pintarFicha();go(2);};
+  l.appendChild(d);
+ });
+ $('porCobrar').textContent=fmt(clientes.reduce((a,c)=>a+c.s,0));
+ $('conSaldo').textContent=clientes.filter(c=>c.s>0).length+' de '+clientes.length;
+}
+function pintarFicha(){
+ $('t2').textContent=sel.n;
+ $('sub2').textContent=sel.c+' compra(s) · '+fmt(sel.t)+' en total';
+ $('saldo').textContent=fmt(sel.s);$('saldo2').textContent=fmt(sel.s);
+ $('saldoBox').classList.toggle('ok',sel.s<=0);$('saldoBox2').classList.toggle('ok',sel.s<=0);
+ $('vTot').textContent=fmt(sel.t);$('vCo').textContent=fmt(sel.co);$('vCr').textContent=fmt(sel.cr);
+ const u=sel.pagos.length?('L '+sel.pagos[0].m+' · '+sel.pagos[0].f.slice(0,5)+' '+sel.pagos[0].h):'—';
+ $('ultimoMini').textContent='Último: '+u;$('ultimo').textContent=u;
+ $('totalPagado').textContent=fmt(sel.pagos.reduce((a,p)=>a+p.m,0));
+ $('t3').textContent=sel.n+' · resumen';
+ const l=$('lista');l.innerHTML='';
+ sel.pagos.forEach(p=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+p.f+' · '+p.h+'</b><small>Quedó debiendo: '+fmt(p.s)+'</small></div><div class="m">+L '+p.m+'</div>';l.appendChild(d);});
+ if(!sel.pagos.length)l.innerHTML='<p style="color:#98a2ae;font-size:13px;text-align:center">Sin pagos registrados.</p>';
+ $('totPremios').textContent=fmt(sel.premios.reduce((a,p)=>a+p.m,0));
+ const pr=$('premios');pr.innerHTML='';
+ sel.premios.forEach(p=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+p.n+'</b><small>'+p.f+' · '+p.s+' · premio pagado</small></div><div class="m">'+fmt(p.m)+'</div>';pr.appendChild(d);});
+ if(!sel.premios.length)pr.innerHTML='<p style="color:#98a2ae;font-size:13px;text-align:center">Sin premios ganados.</p>';
+ const v=$('ventas');v.innerHTML='';
+ ventas.forEach(t=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+t.c+(t.cr?'<span class="tag">CRÉDITO</span>':'')+'</b><small>'+t.d+'</small></div><div class="m">'+fmt(t.m)+'</div>';v.appendChild(d);});
+}
 function addPago(m){
- saldo=Math.max(0,saldo-m);
+ sel.s=Math.max(0,sel.s-m);
  const a=new Date();
  const f=String(a.getDate()).padStart(2,'0')+'/'+String(a.getMonth()+1).padStart(2,'0')+'/'+a.getFullYear();
  const h=a.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
- pagos.unshift({f,h,m,s:saldo});
- pintar();
- toast('Pago registrado: L '+m+' ✓');
+ sel.pagos.unshift({f,h,m,s:sel.s});
+ pintarFicha();pintarLista();
+ toast('Pago registrado: '+fmt(m)+' ✓');
 }
+$('buscar').oninput=pintarLista;
+$('nuevo').onclick=()=>toast('Nuevo cliente (demo)');
+$('v2').onclick=()=>go(1);
+$('v3').onclick=()=>go(2);
+$('verHistorial').onclick=()=>go(3);
 $('abonar').onclick=()=>{const m=parseFloat($('montoAbono').value);if(!m||m<=0){toast('Escribe un monto');return;}$('montoAbono').value='';addPago(m);};
 $('registrar').onclick=()=>{const m=parseFloat($('montoPago').value);if(!m||m<=0){toast('Escribe un monto');return;}$('montoPago').value='';addPago(m);};
-function pintar(){
- const sTxt='L '+saldo.toFixed(2);
- $('saldo').textContent=sTxt;$('saldo2').textContent=sTxt;
- $('saldoBox').classList.toggle('ok',saldo<=0);$('saldoBox2').classList.toggle('ok',saldo<=0);
- const tp='L '+pagos.reduce((a,p)=>a+p.m,0).toLocaleString();
- $('totalPagado2').textContent=tp;
- const u=pagos.length?('L '+pagos[0].m+' · '+pagos[0].f.slice(0,5)+' '+pagos[0].h):'—';
- $('ultimo').textContent=u;
- $('ultimoMini').textContent='Último: '+u;
- const l=$('lista');l.innerHTML='';
- pagos.forEach(p=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+p.f+' · '+p.h+'</b><small>Quedó debiendo: L '+p.s+'</small></div><div class="m">+L '+p.m+'</div>';l.appendChild(d);});
- const pr=$('premios');pr.innerHTML='';
- $('totPremios').textContent='L '+premios.reduce((a,p)=>a+p.m,0).toLocaleString();
- premios.forEach(p=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+p.n+'</b><small>'+p.f+' · '+p.s+' · premio pagado</small></div><div class="m">L '+p.m.toLocaleString()+'</div>';pr.appendChild(d);});
- const v=$('ventas');v.innerHTML='';
- ventas.forEach(t=>{const d=document.createElement('div');d.className='pay';d.innerHTML='<div class="d"><b>'+t.c+(t.cr?'<span class="tag">CRÉDITO</span>':'')+'</b><small>'+t.d+'</small></div><div class="m">L '+t.m.toFixed(2)+'</div>';v.appendChild(d);});
-}
-pintar();
+pintarLista();
 </script>
 </body>
 </html>
