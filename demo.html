@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v12 · Ganes = venta del número</title>
+<title>Demo v13 · Caja completa</title>
 <style>
 :root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
 *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -14,7 +14,9 @@ header h1{font-size:17px;margin:0;flex:1}
 .card{background:#fff;margin:10px 12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .verde{background:var(--verde);color:#fff;margin:10px 12px;border-radius:16px;padding:16px}
 .verde .r1{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
+.verde .cell{border:0;background:transparent;color:#fff;padding:4px;border-radius:12px}
 .verde .cell b{font-size:16px;display:block}.verde .cell small{font-size:9px;opacity:.8;text-transform:uppercase;font-weight:700}
+.verde .cell.toc{background:rgba(255,255,255,.12)}
 .verde .r2{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)}
 .verde .r2 b{font-size:14px;display:block}.verde .r2 small{font-size:9px;opacity:.8;text-transform:uppercase;font-weight:700}
 .verde .amar{color:#f5d76e}.verde .claro{color:#9fe3c0}
@@ -37,6 +39,7 @@ input[type=date],select,input[type=number]{border:1px solid #d7dce2;border-radiu
 .gane .c{width:36px;height:36px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .gane .d{flex:1}.gane .d b{font-size:14px;display:block}.gane .d small{color:#8a94a0;font-size:11px}
 .gane .m{font-weight:800;color:var(--verde2);font-size:14px}
+.gane .pay{border:0;background:var(--verde);color:#fff;border-radius:10px;padding:8px 10px;font-weight:800;font-size:11px;flex-shrink:0}
 .totalRow{display:flex;justify-content:space-between;align-items:center;background:#e8f3ee;border-radius:12px;padding:12px;margin-bottom:10px}
 .totalRow small{color:#8a94a0;font-weight:700;font-size:10px;text-transform:uppercase}
 .totalRow b{color:var(--verde2);font-size:18px}
@@ -47,7 +50,7 @@ input[type=date],select,input[type=number]{border:1px solid #d7dce2;border-radiu
 .dual{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
 .dual div{border-radius:14px;padding:12px;text-align:center}
 .dual .g{background:#e8f3ee}.dual .r{background:#fdf6e3}
-.dual b{font-size:17px;display:block}.dual .g b{color:var(--verde2)}.dual .r b{color:#92400e}
+.dual b{font-size:16px;display:block}.dual .g b{color:var(--verde2)}.dual .r b{color:#92400e}
 .dual small{font-size:9px;font-weight:700;text-transform:uppercase;color:#8a94a0}
 .screen{display:none}.screen.on{display:block}
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60}
@@ -59,11 +62,11 @@ input[type=date],select,input[type=number]{border:1px solid #d7dce2;border-radiu
 <header><button class="back">←</button><h1>Caja del día</h1></header>
 <div class="verde">
 <div class="r1">
-<div class="cell"><b id="vHoy">—</b><small>Vendido hoy</small></div>
+<button class="cell toc" id="abreRango"><b id="vHoy">—</b><small>Vendido hoy · toca rango</small></button>
 <div class="cell"><b id="pHoy">—</b><small>Premios pagados</small></div>
 <div class="cell"><b class="claro" id="gHoy">—</b><small>Ganancia</small></div>
 </div>
-<div class="r2"><div><b id="coHoy">L 1,790.00</b><small>Contado</small></div><div><b class="amar" id="crHoy">L 9,725.00</b><small>Crédito hoy</small></div></div>
+<div class="r2"><div><b>L 1,790.00</b><small>Contado</small></div><div><b class="amar">L 9,725.00</b><small>Crédito hoy</small></div></div>
 </div>
 <div class="card">
 <div class="hdr"><h2 style="margin:0">Por sorteo</h2><span class="chipHist" id="hist">—</span></div>
@@ -84,34 +87,45 @@ input[type=date],select,input[type=number]{border:1px solid #d7dce2;border-radiu
 </div>
 </div>
 
+<div class="modal" id="sheetRango">
+<div class="sheet">
+<div class="t">Vendido por rango de fechas</div>
+<input type="date" id="desde" value="2026-08-08" style="margin-bottom:8px">
+<input type="date" id="hasta" value="2026-08-14">
+<div class="totalRow" style="margin-top:12px"><small>Total del rango</small><b id="totRango">—</b></div>
+<button class="btn p" id="cierraRango">Listo</button>
+</div>
+</div>
+
 <div class="modal" id="sheetPago">
 <div class="sheet">
 <div class="t">Pagar premio</div>
 <select id="selSorteo"></select>
 <div style="height:8px"></div>
-<input type="number" id="numGan" placeholder="Número ganador (ej: 21)">
+<input type="number" id="numGan" placeholder="Número ganador (ej: 86)">
+<div id="winList" style="margin-top:10px"></div>
 <div class="dual">
 <div class="g"><b id="gane">—</b><small>Gane a registrar (venta del número)</small></div>
-<div class="r"><b id="pago">—</b><small>Premio a pagar al cliente (×70)</small></div>
+<div class="r"><b id="pago">—</b><small>Total a pagar (×70)</small></div>
 </div>
-<div class="btn p" id="confirma">Pagar y registrar gane</div>
-<div class="btn s" id="cancela" style="margin-top:8px">Cancelar</div>
+<div class="btn s" id="cancela" style="margin-top:0">Cerrar</div>
 </div>
 </div>
 
 <div id="toast"></div>
 <script>
 const HOY='2026-08-14';
-const NOM={10:'Anillo',11:'Perro',19:'Mariposa',28:'Gallo',7:'Navaja'};
+const NOM={8:'Conejo',10:'Anillo',11:'Perro',19:'Mariposa',28:'Gallo',86:'Reloj'};
 const ventas=[
- {f:'2026-08-14',s:'Mañana',j:[{n:'28',p:20},{n:'28',p:20},{n:'28',p:20},{n:'28',p:20},{n:'07',p:20}]},
- {f:'2026-08-14',s:'Tarde',j:[{n:'10',p:90}]},
- {f:'2026-08-14',s:'Noche',j:[{n:'19',p:50},{n:'19',p:30}]},
- {f:'2026-08-13',s:'Mañana',j:[{n:'10',p:90}]},
- {f:'2026-08-13',s:'Tarde',j:[{n:'11',p:100}]},
- {f:'2026-08-08',s:'Mañana',j:[{n:'19',p:80}]},
- {f:'2026-08-08',s:'Tarde',j:[{n:'10',p:90}]},
- {f:'2026-08-08',s:'Noche',j:[{n:'11',p:100}]}
+ {f:'2026-08-14',s:'Mañana',c:'Vilma',j:[{n:'86',p:10},{n:'86',p:10},{n:'86',p:10}]},
+ {f:'2026-08-14',s:'Mañana',c:'Lupe',j:[{n:'08',p:10},{n:'08',p:10},{n:'08',p:20},{n:'08',p:70}]},
+ {f:'2026-08-14',s:'Tarde',c:'Tina',j:[{n:'28',p:20},{n:'28',p:20},{n:'28',p:20},{n:'28',p:20}]},
+ {f:'2026-08-14',s:'Noche',c:'Manuel',j:[{n:'94',p:50},{n:'46',p:50}]},
+ {f:'2026-08-13',s:'Mañana',c:'Tina',j:[{n:'10',p:90}]},
+ {f:'2026-08-13',s:'Tarde',c:'Lupe',j:[{n:'11',p:100}]},
+ {f:'2026-08-08',s:'Mañana',c:'Elvia',j:[{n:'19',p:80}]},
+ {f:'2026-08-08',s:'Tarde',c:'Elvia',j:[{n:'10',p:90}]},
+ {f:'2026-08-08',s:'Noche',c:'Elvia',j:[{n:'11',p:100}]}
 ];
 let premios=[
  {f:'2026-08-13',s:'Mañana',num:'10',nom:'Anillo',veces:1,vendido:90,pagado:6300},
@@ -127,11 +141,6 @@ function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeou
 function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on');window.scrollTo(0,0);}
 const sum=a=>a.reduce((x,y)=>x+y.m,0);
 const DOT={Mañana:'#f2c744',Tarde:'#7ea2f2',Noche:'#48c774'};
-function vendidoNumero(f,s,num){
- let t=0,v=0;
- ventas.filter(x=>x.f===f&&x.s===s).forEach(x=>x.j.forEach(j=>{if(j.n===num){t+=j.p;v++;}}));
- return {t,v};
-}
 function ventaDia(f){let t=0;ventas.filter(v=>v.f===f).forEach(v=>v.j.forEach(j=>t+=j.p));return t;}
 function pintarCaja(){
  $('vHoy').textContent=fmt(ventaDia(HOY));
@@ -149,6 +158,48 @@ function pintarBreakdown(){
  });
  bd.innerHTML+='<div class="fila"><span class="n">Total del día</span><span class="m">'+fmt(ventaDia(f))+'</span></div>';
 }
+function rangoTotal(){
+ const d=$('desde').value,h=$('hasta').value;
+ let t=0;ventas.filter(v=>v.f>=d&&v.f<=h).forEach(v=>v.j.forEach(j=>t+=j.p));
+ $('totRango').textContent=fmt(t);
+}
+function ganadoresAgrupados(){
+ const val=$('selSorteo').value||'';
+ const [f,s]=val.split('|');
+ const raw=$('numGan').value.trim();
+ if(!f||!raw)return[];
+ const num=raw.padStart(2,'0');
+ const map={};
+ ventas.filter(v=>v.f===f&&v.s===s).forEach(v=>v.j.forEach(j=>{
+  if(j.n===num){
+   const c=v.c||'General';
+   if(!map[c])map[c]={c,veces:0,t:0};
+   map[c].veces++;map[c].t+=j.p;
+  }
+ }));
+ return Object.values(map).filter(g=>!premios.some(p=>p.f===f&&p.s===s&&p.num===num&&p.cliente===g.c));
+}
+function pintarWin(){
+ const num=$('numGan').value.trim().padStart(2,'0');
+ const gs=ganadoresAgrupados();
+ const wl=$('winList');wl.innerHTML='';
+ gs.forEach(g=>{
+  const d=document.createElement('div');
+  d.className='gane';
+  d.innerHTML='<div class="c">'+num+'</div><div class="d"><b>'+g.c+'</b><small>'+g.veces+' vez'+(g.veces>1?'es':'')+' · jugó '+fmt(g.t)+'</small></div><button class="pay">Pagar '+fmt(g.t*70)+'</button>';
+  d.querySelector('.pay').onclick=()=>{
+   const [f,s]=($('selSorteo').value||'|').split('|');
+   premios.unshift({f,s,num,nom:NOM[parseInt(num,10)]||'',veces:g.veces,vendido:g.t,pagado:g.t*70,cliente:g.c});
+   pintarCaja();pintarWin();
+   toast('Pagado a '+g.c+': '+fmt(g.t*70)+' · gane registrado '+fmt(g.t)+' ✓');
+  };
+  wl.appendChild(d);
+ });
+ if($('numGan').value.trim()&&!gs.length)wl.innerHTML='<p style="color:#98a2ae;font-size:13px;text-align:center">Nadie jugó ese número (o ya se pagó).</p>';
+ const tv=gs.reduce((a,g)=>a+g.t,0);
+ $('gane').textContent=gs.length?fmt(tv):'—';
+ $('pago').textContent=gs.length?fmt(tv*70):'—';
+}
 function pintarMeses(){
  const meses=[...new Set(premios.map(p=>p.f.slice(0,7)))].sort().reverse();
  const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -165,36 +216,22 @@ function pintarDias(){
   const d=document.createElement('div');d.className='dia';
   d.innerHTML='<button class="hd"><span>'+f.slice(8,10)+'/'+f.slice(5,7)+'/'+f.slice(2,4)+'</span><small>'+fmt(delDia.reduce((a,p)=>a+p.vendido,0))+' ▾</small></button><div class="bd" style="display:none"></div>';
   const bd=d.querySelector('.bd');
-  delDia.forEach(p=>{
-    bd.innerHTML+='<div class="gane"><div class="c">'+p.num+'</div><div class="d"><b>'+p.num+' '+p.nom+'</b><small>'+p.s+' · '+p.veces+' vez'+(p.veces>1?'es':'')+'</small></div><div class="m">'+fmt(p.vendido)+'</div></div>';
-  });
+  delDia.forEach(p=>{bd.innerHTML+='<div class="gane"><div class="c">'+p.num+'</div><div class="d"><b>'+p.num+' '+p.nom+'</b><small>'+p.s+' · '+p.veces+' vez'+(p.veces>1?'es':'')+'</small></div><div class="m">'+fmt(p.vendido)+'</div></div>';});
   d.querySelector('.hd').onclick=()=>{bd.style.display=bd.style.display==='none'?'block':'none';};
   c.appendChild(d);
  });
 }
-function calcPago(){
- const [f,s]=($('selSorteo').value||'|').split('|');
- const num=String($('numGan').value).padStart(2,'0');
- const r= vendidoNumero(f,s,num);
- $('gane').textContent=r.v?fmt(r.t)+' · '+r.veces+'v':'—';
- $('pago').textContent=r.v?fmt(r.t*70):'—';
- return {f,s,num,r};
-}
+$('abreRango').onclick=()=>{rangoTotal();$('sheetRango').classList.add('open');};
+$('desde').oninput=rangoTotal;$('hasta').oninput=rangoTotal;
+$('cierraRango').onclick=()=>$('sheetRango').classList.remove('open');
 $('pagarPremio').onclick=()=>{
  const combos=[...new Set(ventas.map(v=>v.f+'|'+v.s))];
- $('selSorteo').innerHTML=combos.map(c=>{const [f,s]=c.split('|');return '<option value="'+c+'">'+f.slice(8,10)+'/'+f.slice(5,7)+' · '+s+'</option>';}).join('');
- $('numGan').value='';calcPago();
+ $('selSorteo').innerHTML=combos.map(c=>{const [f,s]=c.split('|');return '<option value="'+c+'">'+s+' ('+f+')</option>';}).join('');
+ $('numGan').value='';pintarWin();
  $('sheetPago').classList.add('open');
 };
-$('selSorteo').onchange=calcPago;$('numGan').oninput=calcPago;
+$('selSorteo').onchange=pintarWin;$('numGan').oninput=pintarWin;
 $('cancela').onclick=()=>$('sheetPago').classList.remove('open');
-$('confirma').onclick=()=>{
- const {f,s,num,r}=calcPago();
- if(!r.v){toast('Nadie jugó ese número en ese sorteo');return;}
- premios.unshift({f,s,num,nom:NOM[parseInt(num,10)]||'',veces:r.v,vendido:r.t,pagado:r.t*70});
- $('sheetPago').classList.remove('open');
- pintarCaja();toast('Gane registrado: '+num+' · venta '+fmt(r.t)+' ✓');
-};
 $('verMeses').onclick=()=>{pintarMeses();go(2);};
 $('v2').onclick=()=>go(1);
 $('fechaSorteo').onchange=pintarBreakdown;
