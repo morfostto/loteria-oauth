@@ -3,78 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preview Nueva Venta v2</title>
+<title>Preview Nueva Venta v3</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>html,body{height:100%}</style>
 </head>
 <body class="bg-slate-300">
-<div class="max-w-md mx-auto h-screen flex flex-col bg-[#f5f7f9] overflow-hidden">
+<div class="max-w-md mx-auto h-screen flex flex-col bg-[#f5f7f9] overflow-hidden relative">
 
-  <div class="flex items-center justify-between px-5 pt-2 pb-1 bg-[#f5f7f9] text-slate-900 text-xs font-bold"><span>9:41</span><span class="flex items-center gap-1"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>🔋</span></div>
+  <div class="flex items-center justify-between px-5 pt-1.5 pb-0.5 text-slate-900 text-xs font-bold"><span>9:41</span><span>📶 🔋</span></div>
 
-  <div class="px-4 pt-2 pb-3 flex items-center gap-3">
-    <button class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button>
-    <div class="flex-1">
-      <h1 class="text-lg font-bold text-slate-900 leading-tight">Nueva venta</h1>
-      <p class="text-[11px] text-gray-400">Selecciona tus números</p>
+  <div class="px-3 pt-1 pb-2 flex items-center gap-2">
+    <button class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-800 flex-shrink-0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></button>
+    <div class="flex-1 min-w-0">
+      <h1 class="text-base font-bold text-slate-900 leading-tight">Nueva venta</h1>
+      <p class="text-[10px] text-gray-400 leading-tight">Selecciona tus números</p>
     </div>
-    <button class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg></button>
-    <button class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#1a4a3a]"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></button>
+    <button id="btnJuegos" class="w-9 h-9 rounded-xl bg-[#1a4a3a] shadow-sm flex items-center justify-center text-white flex-shrink-0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></button>
+    <button class="w-9 h-9 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-500 flex-shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg></button>
+    <button class="w-9 h-9 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#1a4a3a] flex-shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></button>
   </div>
 
-  <div class="mx-4 bg-white rounded-2xl shadow-sm flex">
-    <div class="flex-1 px-4 py-2.5 border-r border-slate-100">
-      <p class="text-[10px] text-gray-400 font-semibold">Fecha</p>
-      <div class="flex items-center justify-between"><span class="text-sm font-bold text-slate-900">18/08/2026</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-600"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></div>
+  <div id="menuJuegos" class="hidden absolute right-3 top-[92px] z-40 bg-white rounded-2xl shadow-xl border border-slate-100 p-1.5 w-56">
+    <button class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl bg-emerald-50 border border-[#1a4a3a]"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a4a3a" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="text-xs font-bold text-[#1a4a3a] flex-1 text-left">La Diaria · Variable</span><span class="text-[#1a4a3a] text-xs font-bold">✓</span></button>
+    <button class="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-slate-50"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span class="text-xs font-bold text-gray-500 flex-1 text-left">Pares/Nones</span></button>
+  </div>
+
+  <div class="mx-3 bg-white rounded-xl shadow-sm flex">
+    <div class="flex-1 px-3 py-1.5 border-r border-slate-100">
+      <p class="text-[9px] text-gray-400 font-semibold">Fecha</p>
+      <div class="flex items-center justify-between"><span class="text-[13px] font-bold text-slate-900">18/08/2026</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-600"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></div>
     </div>
-    <div class="flex-1 px-4 py-2.5">
-      <p class="text-[10px] text-gray-400 font-semibold">Sorteo</p>
-      <div class="flex items-center justify-between"><span class="text-sm font-bold text-slate-900">Tarde</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="m6 9 6 6 6-6"/></svg></div>
+    <div class="flex-1 px-3 py-1.5">
+      <p class="text-[9px] text-gray-400 font-semibold">Sorteo</p>
+      <div class="flex items-center justify-between"><span class="text-[13px] font-bold text-slate-900">Tarde</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="m6 9 6 6 6-6"/></svg></div>
     </div>
   </div>
 
-  <div class="mx-4 mt-3 bg-white rounded-2xl shadow-sm p-3">
-    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-2">Números seleccionados (3)</p>
-    <div class="flex items-center gap-2">
-      <div class="flex-1 flex gap-2 overflow-x-auto">
-        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-xl px-3 py-2 flex items-center gap-2"><span class="text-base font-extrabold text-slate-900">45</span><span class="text-[10px] text-gray-400 font-semibold">L 0.20</span><button class="text-red-500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
-        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-xl px-3 py-2 flex items-center gap-2"><span class="text-base font-extrabold text-slate-900">78</span><span class="text-[10px] text-gray-400 font-semibold">L 0.20</span><button class="text-red-500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
-        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-xl px-3 py-2 flex items-center gap-2"><span class="text-base font-extrabold text-slate-900">12</span><span class="text-[10px] text-gray-400 font-semibold">L 0.50</span><button class="text-red-500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+  <div class="mx-3 mt-2 bg-white rounded-xl shadow-sm px-2.5 pt-1.5 pb-2">
+    <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Números seleccionados (3)</p>
+    <div class="flex items-center gap-1.5">
+      <div class="flex-1 flex gap-1.5 overflow-x-auto">
+        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-lg px-2 py-1 flex items-center gap-1.5"><span class="text-sm font-extrabold text-slate-900">45</span><span class="text-[9px] text-gray-400 font-semibold">L 0.20</span><button class="text-red-500"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-lg px-2 py-1 flex items-center gap-1.5"><span class="text-sm font-extrabold text-slate-900">78</span><span class="text-[9px] text-gray-400 font-semibold">L 0.20</span><button class="text-red-500"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
+        <div class="flex-shrink-0 border-2 border-[#1a4a3a] rounded-lg px-2 py-1 flex items-center gap-1.5"><span class="text-sm font-extrabold text-slate-900">12</span><span class="text-[9px] text-gray-400 font-semibold">L 0.50</span><button class="text-red-500"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
       </div>
-      <div class="flex-shrink-0 bg-emerald-50 rounded-xl px-3 py-1.5 flex items-center gap-2">
-        <div><p class="text-[10px] text-gray-500 font-semibold">Total</p><p class="text-sm font-extrabold text-[#1a4a3a] leading-tight">L 90.00</p></div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a4a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+      <div class="flex-shrink-0 bg-emerald-50 rounded-lg px-2 py-1 text-center">
+        <p class="text-[8px] text-gray-500 font-semibold leading-none">Total</p>
+        <p class="text-[12px] font-extrabold text-[#1a4a3a] leading-tight">L 90.00</p>
       </div>
     </div>
   </div>
 
-  <div class="mx-4 mt-3 mb-2 bg-white rounded-2xl shadow-sm p-2.5 flex-1 flex flex-col min-h-0">
-    <div class="flex justify-between px-1 pb-2"><span class="text-gray-400 text-[10px] font-bold uppercase tracking-wide">Tablero · La Diaria</span><span class="text-gray-500 text-[10px] font-semibold">3 jugadas</span></div>
-    <div id="grid" class="grid grid-cols-10 gap-1.5 flex-1 auto-rows-fr"></div>
+  <div class="mx-3 mt-2 mb-1.5 bg-white rounded-xl shadow-sm p-2 flex-1 flex flex-col min-h-0">
+    <div class="flex justify-between px-1 pb-1.5"><span class="text-gray-400 text-[9px] font-bold uppercase tracking-wide">Tablero · La Diaria</span><span class="text-gray-500 text-[9px] font-semibold">3 jugadas</span></div>
+    <div id="grid" class="grid grid-cols-10 gap-1 flex-1 auto-rows-fr"></div>
   </div>
 
-  <div class="px-4 pb-2 flex gap-2">
-    <button class="flex-1 border-2 border-[#1a4a3a] bg-emerald-50 rounded-xl h-10 flex items-center justify-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1a4a3a" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="text-xs font-bold text-[#1a4a3a]">La Diaria · Variable</span></button>
-    <button class="flex-1 border border-slate-200 bg-white rounded-xl h-10 flex items-center justify-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span class="text-xs font-bold text-gray-500">Pares/Nones</span></button>
-  </div>
-
-  <div class="bg-white px-4 pt-2.5 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-    <button class="w-full bg-slate-100 rounded-xl px-3 py-2.5 flex items-center gap-2 text-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="text-sm text-gray-400 flex-1">Cliente (opcional)</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="m6 9 6 6 6-6"/></svg></button>
-    <div class="flex items-center justify-between mt-2 gap-3">
-      <div><p class="text-gray-400 text-[11px]">3 jugada(s)</p><p class="text-[#1a4a3a] text-2xl font-extrabold leading-tight">L 90.00</p></div>
-      <button class="flex-1 bg-[#1a4a3a] text-white py-3.5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg> FACTURAR</button>
+  <div class="bg-white px-3 pt-2 pb-2 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+    <button class="w-full bg-slate-100 rounded-lg px-3 py-1.5 flex items-center gap-2 text-left"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="text-[13px] text-gray-400 flex-1">Cliente (opcional)</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-400"><path d="m6 9 6 6 6-6"/></svg></button>
+    <div class="flex items-center justify-between mt-1.5 gap-3">
+      <div class="flex-shrink-0"><p class="text-gray-400 text-[10px] leading-none mb-0.5">3 jugada(s)</p><p class="text-[#1a4a3a] text-lg font-extrabold leading-none">L 90.00</p></div>
+      <button class="flex-1 bg-[#1a4a3a] text-white py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg> FACTURAR</button>
     </div>
   </div>
 
-  <div class="bg-white border-t border-slate-100 flex py-2 text-[11px] font-semibold text-gray-400">
-    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Inicio</div>
-    <div class="flex-1 flex flex-col items-center gap-0.5 text-[#1a4a3a] font-bold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Nueva venta</div>
-    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clientes</div>
-    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>Más</div>
+  <div class="bg-white border-t border-slate-100 flex py-1.5 text-[10px] font-semibold text-gray-400">
+    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Inicio</div>
+    <div class="flex-1 flex flex-col items-center gap-0.5 text-[#1a4a3a] font-bold"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Nueva venta</div>
+    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clientes</div>
+    <div class="flex-1 flex flex-col items-center gap-0.5"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>Más</div>
   </div>
 
 </div>
 <script>
+  document.getElementById('btnJuegos').onclick = () => document.getElementById('menuJuegos').classList.toggle('hidden');
   const grid = document.getElementById('grid');
   const enCarrito = [45,78,12];
   const seleccionado = [33];
@@ -82,10 +84,10 @@
     const num = String(n).padStart(2,'0');
     const b = document.createElement('button');
     b.textContent = num;
-    let cls = 'rounded-xl flex items-center justify-center text-[13px] font-bold ';
-    if (seleccionado.includes(n)) cls += 'bg-[#1a4a3a] text-white shadow-md';
-    else if (enCarrito.includes(n)) cls += 'bg-emerald-100 text-[#1a4a3a]';
-    else cls += 'bg-white border border-slate-200 text-slate-800';
+    let cls = 'rounded-lg flex items-center justify-center font-bold ';
+    if (seleccionado.includes(n)) cls += 'bg-[#1a4a3a] text-white shadow-md text-sm';
+    else if (enCarrito.includes(n)) cls += 'bg-emerald-100 text-[#1a4a3a] text-sm';
+    else cls += 'bg-white border border-slate-200 text-slate-800 text-sm';
     b.className = cls;
     grid.appendChild(b);
   }
