@@ -1,241 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo v13 · Caja completa</title>
-<style>
-:root{--verde:#1a4a3a;--verde2:#14564a;--fondo:#f2f5f7}
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--fondo);color:#111}
-header{background:var(--verde);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
-.back{width:38px;height:38px;border-radius:50%;background:#fff;color:var(--verde);display:flex;align-items:center;justify-content:center;font-size:18px;border:0}
-header h1{font-size:17px;margin:0;flex:1}
-.card{background:#fff;margin:10px 12px;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.verde{background:var(--verde);color:#fff;margin:10px 12px;border-radius:16px;padding:16px}
-.verde .r1{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center}
-.verde .cell{border:0;background:transparent;color:#fff;padding:4px;border-radius:12px}
-.verde .cell b{font-size:16px;display:block}.verde .cell small{font-size:9px;opacity:.8;text-transform:uppercase;font-weight:700}
-.verde .cell.toc{background:rgba(255,255,255,.12)}
-.verde .r2{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)}
-.verde .r2 b{font-size:14px;display:block}.verde .r2 small{font-size:9px;opacity:.8;text-transform:uppercase;font-weight:700}
-.verde .amar{color:#f5d76e}.verde .claro{color:#9fe3c0}
-.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.chipHist{background:#e8f3ee;color:var(--verde2);font-size:10px;font-weight:800;border-radius:8px;padding:4px 8px}
-.fila{display:flex;justify-content:space-between;align-items:center;padding:10px 2px;border-bottom:1px solid #eef1f4}
-.fila:last-child{border-bottom:0}
-.fila .n{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
-.dot{width:8px;height:8px;border-radius:50%}
-.fila .m{font-weight:800;color:var(--verde2);font-size:14px}
-input[type=date],select,input[type=number]{border:1px solid #d7dce2;border-radius:12px;padding:10px;font-size:14px;background:#fff;width:100%}
-.btn{width:100%;border:0;border-radius:14px;padding:14px;font-weight:800;font-size:14px}
-.btn.p{background:var(--verde);color:#fff}
-.btn.s{background:#e8f3ee;color:var(--verde);border:2px solid var(--verde);margin-top:8px}
-.dia{background:#f2f5f7;border-radius:14px;margin-bottom:8px;overflow:hidden}
-.dia .hd{display:flex;justify-content:space-between;align-items:center;padding:12px;font-weight:800;font-size:14px;border:0;background:transparent;width:100%;text-align:left}
-.dia .hd small{color:#8a94a0;font-weight:700}
-.dia .bd{padding:0 12px 12px}
-.gane{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:10px;margin-top:8px}
-.gane .c{width:36px;height:36px;border-radius:50%;background:var(--verde);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.gane .d{flex:1}.gane .d b{font-size:14px;display:block}.gane .d small{color:#8a94a0;font-size:11px}
-.gane .m{font-weight:800;color:var(--verde2);font-size:14px}
-.gane .pay{border:0;background:var(--verde);color:#fff;border-radius:10px;padding:8px 10px;font-weight:800;font-size:11px;flex-shrink:0}
-.totalRow{display:flex;justify-content:space-between;align-items:center;background:#e8f3ee;border-radius:12px;padding:12px;margin-bottom:10px}
-.totalRow small{color:#8a94a0;font-weight:700;font-size:10px;text-transform:uppercase}
-.totalRow b{color:var(--verde2);font-size:18px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
-.modal.open{display:flex}
-.sheet{background:#fff;width:100%;max-width:420px;border-radius:20px 20px 0 0;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));max-height:85vh;overflow-y:auto}
-.sheet .t{font-weight:800;font-size:16px;margin-bottom:10px}
-.dual{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
-.dual div{border-radius:14px;padding:12px;text-align:center}
-.dual .g{background:#e8f3ee}.dual .r{background:#fdf6e3}
-.dual b{font-size:16px;display:block}.dual .g b{color:var(--verde2)}.dual .r b{color:#92400e}
-.dual small{font-size:9px;font-weight:700;text-transform:uppercase;color:#8a94a0}
-.screen{display:none}.screen.on{display:block}
-#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#14564a;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60}
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview Nueva Venta</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>html,body{height:100%}</style>
 </head>
-<body>
+<body class="bg-slate-300">
+<div class="max-w-md mx-auto h-screen flex flex-col bg-[#f5f7f9] overflow-hidden">
 
-<div id="s1" class="screen on">
-<header><button class="back">←</button><h1>Caja del día</h1></header>
-<div class="verde">
-<div class="r1">
-<button class="cell toc" id="abreRango"><b id="vHoy">—</b><small>Vendido hoy · toca rango</small></button>
-<div class="cell"><b id="pHoy">—</b><small>Premios pagados</small></div>
-<div class="cell"><b class="claro" id="gHoy">—</b><small>Ganancia</small></div>
-</div>
-<div class="r2"><div><b>L 1,790.00</b><small>Contado</small></div><div><b class="amar">L 9,725.00</b><small>Crédito hoy</small></div></div>
-</div>
-<div class="card">
-<div class="hdr"><h2 style="margin:0">Por sorteo</h2><span class="chipHist" id="hist">—</span></div>
-<input type="date" id="fechaSorteo" value="2026-08-14">
-<div id="breakdown" style="margin-top:8px"></div>
-</div>
-<button class="btn p" style="margin:10px 12px;width:calc(100% - 24px)" id="pagarPremio">Pagar premio</button>
-<button class="btn s" style="margin:0 12px;width:calc(100% - 24px)" id="verMeses">Ganes por mes</button>
-</div>
+  <div class="flex items-center justify-between px-5 pt-2 pb-1 bg-white text-slate-900 text-xs font-bold"><span>11:16</span><span>📶 🔋 57</span></div>
 
-<div id="s2" class="screen">
-<header><button class="back" id="v2">←</button><h1>Ganes por mes</h1></header>
-<div class="card">
-<select id="mesSel"></select>
-<div style="height:10px"></div>
-<div class="totalRow"><small>Total ganado por la lotería (venta de números)</small><b id="totMes">—</b></div>
-<div id="dias"></div>
-</div>
-</div>
+  <div class="bg-white px-4 pb-3 shadow-sm">
+    <div class="flex items-center gap-3 pt-1">
+      <button class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-[#1a4a3a] text-xl">←</button>
+      <h1 class="text-lg font-bold text-slate-900 flex-1">Nueva Venta</h1>
+      <button class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center">💾</button>
+      <button class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center text-[#1a4a3a]">🗃️</button>
+    </div>
+    <div class="flex gap-2 mt-3">
+      <div class="flex-1 bg-slate-50 rounded-xl px-3 py-2.5 text-sm font-semibold flex justify-between items-center">18/08/2026 <span class="text-gray-400">⌄</span></div>
+      <div class="flex-1 bg-slate-50 rounded-xl px-3 py-2.5 text-sm font-semibold flex justify-between items-center">Tarde <span class="text-gray-400">⌄</span></div>
+    </div>
+  </div>
 
-<div class="modal" id="sheetRango">
-<div class="sheet">
-<div class="t">Vendido por rango de fechas</div>
-<input type="date" id="desde" value="2026-08-08" style="margin-bottom:8px">
-<input type="date" id="hasta" value="2026-08-14">
-<div class="totalRow" style="margin-top:12px"><small>Total del rango</small><b id="totRango">—</b></div>
-<button class="btn p" id="cierraRango">Listo</button>
-</div>
-</div>
+  <div class="px-4 pt-2 flex gap-2 overflow-x-auto flex-shrink-0">
+    <div class="flex-shrink-0 bg-white rounded-xl px-3 py-1.5 shadow-sm flex items-center gap-2 border-2 border-[#1a4a3a]"><span class="text-sm font-extrabold text-slate-900">45</span><span class="text-[10px] text-gray-400">L 20</span><span class="text-red-400 text-xs font-bold">✕</span></div>
+    <div class="flex-shrink-0 bg-white rounded-xl px-3 py-1.5 shadow-sm flex items-center gap-2 border-2 border-[#1a4a3a]"><span class="text-sm font-extrabold text-slate-900">78</span><span class="text-[10px] text-gray-400">L 20</span><span class="text-red-400 text-xs font-bold">✕</span></div>
+    <div class="flex-shrink-0 bg-white rounded-xl px-3 py-1.5 shadow-sm flex items-center gap-2 border-2 border-[#1a4a3a]"><span class="text-sm font-extrabold text-slate-900">12</span><span class="text-[10px] text-gray-400">L 50</span><span class="text-red-400 text-xs font-bold">✕</span></div>
+  </div>
 
-<div class="modal" id="sheetPago">
-<div class="sheet">
-<div class="t">Pagar premio</div>
-<select id="selSorteo"></select>
-<div style="height:8px"></div>
-<input type="number" id="numGan" placeholder="Número ganador (ej: 86)">
-<div id="winList" style="margin-top:10px"></div>
-<div class="dual">
-<div class="g"><b id="gane">—</b><small>Gane a registrar (venta del número)</small></div>
-<div class="r"><b id="pago">—</b><small>Total a pagar (×70)</small></div>
-</div>
-<div class="btn s" id="cancela" style="margin-top:0">Cerrar</div>
-</div>
-</div>
+  <div class="mx-4 mt-2 mb-2 bg-white rounded-2xl p-2.5 shadow-sm flex-1 flex flex-col min-h-0">
+    <div class="flex justify-between px-1 pb-1.5"><span class="text-gray-400 text-[10px] font-bold uppercase tracking-wide">Tablero · La Diaria</span><span class="text-[#1a4a3a] text-[10px] font-bold">3 jugadas</span></div>
+    <div id="grid" class="grid grid-cols-10 gap-1 flex-1 auto-rows-fr"></div>
+  </div>
 
-<div id="toast"></div>
+  <div class="px-4 pb-2 flex gap-2 overflow-x-auto flex-shrink-0">
+    <button class="flex-shrink-0 border-2 border-[#1a4a3a] bg-emerald-50 rounded-xl px-3 py-1.5 flex items-center gap-2"><span class="w-6 h-6 bg-white rounded-md flex items-center justify-center text-[#1a4a3a]">◎</span><span class="text-xs font-bold text-gray-800">La Diaria <span class="text-[#1a4a3a]">· Variable</span></span></button>
+    <button class="flex-shrink-0 border-2 border-transparent bg-white rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-sm"><span class="w-6 h-6 bg-slate-100 rounded-md flex items-center justify-center text-gray-500">🎫</span><span class="text-xs font-bold text-gray-500">Pares/Nones</span></button>
+  </div>
+
+  <div class="bg-white px-4 pt-2.5 pb-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex-shrink-0">
+    <div class="bg-slate-50 rounded-xl px-3 py-2 text-sm text-gray-400 flex justify-between items-center">👤 Cliente <span>⌄</span></div>
+    <div class="flex items-center justify-between mt-2">
+      <div><p class="text-gray-400 text-[11px]">3 jugada(s)</p><p class="text-[#1a4a3a] text-xl font-extrabold leading-tight">L 90.00</p></div>
+      <button class="bg-[#1a4a3a] text-white px-6 py-3 rounded-2xl font-bold text-sm">🎫 FACTURAR</button>
+    </div>
+  </div>
+
+  <div class="bg-white border-t border-slate-100 flex py-2 text-[11px] font-semibold text-gray-400 flex-shrink-0">
+    <div class="flex-1 text-center">🏠 Inicio</div>
+    <div class="flex-1 text-center text-[#1a4a3a] font-bold">＋ Nueva Venta</div>
+    <div class="flex-1 text-center">👥 Clientes</div>
+    <div class="flex-1 text-center">••• Más</div>
+  </div>
+
+</div>
 <script>
-const HOY='2026-08-14';
-const NOM={8:'Conejo',10:'Anillo',11:'Perro',19:'Mariposa',28:'Gallo',86:'Reloj'};
-const ventas=[
- {f:'2026-08-14',s:'Mañana',c:'Vilma',j:[{n:'86',p:10},{n:'86',p:10},{n:'86',p:10}]},
- {f:'2026-08-14',s:'Mañana',c:'Lupe',j:[{n:'08',p:10},{n:'08',p:10},{n:'08',p:20},{n:'08',p:70}]},
- {f:'2026-08-14',s:'Tarde',c:'Tina',j:[{n:'28',p:20},{n:'28',p:20},{n:'28',p:20},{n:'28',p:20}]},
- {f:'2026-08-14',s:'Noche',c:'Manuel',j:[{n:'94',p:50},{n:'46',p:50}]},
- {f:'2026-08-13',s:'Mañana',c:'Tina',j:[{n:'10',p:90}]},
- {f:'2026-08-13',s:'Tarde',c:'Lupe',j:[{n:'11',p:100}]},
- {f:'2026-08-08',s:'Mañana',c:'Elvia',j:[{n:'19',p:80}]},
- {f:'2026-08-08',s:'Tarde',c:'Elvia',j:[{n:'10',p:90}]},
- {f:'2026-08-08',s:'Noche',c:'Elvia',j:[{n:'11',p:100}]}
-];
-let premios=[
- {f:'2026-08-13',s:'Mañana',num:'10',nom:'Anillo',veces:1,vendido:90,pagado:6300},
- {f:'2026-08-13',s:'Tarde',num:'11',nom:'Perro',veces:1,vendido:100,pagado:7000},
- {f:'2026-08-08',s:'Mañana',num:'19',nom:'Mariposa',veces:1,vendido:80,pagado:5600},
- {f:'2026-08-08',s:'Tarde',num:'10',nom:'Anillo',veces:1,vendido:90,pagado:6300},
- {f:'2026-08-08',s:'Noche',num:'11',nom:'Perro',veces:1,vendido:100,pagado:7000},
- {f:'2026-07-26',s:'Noche',num:'10',nom:'Anillo',veces:1,vendido:50,pagado:3500}
-];
-const $=id=>document.getElementById(id);
-const fmt=n=>'L '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,2000);}
-function go(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on');window.scrollTo(0,0);}
-const sum=a=>a.reduce((x,y)=>x+y.m,0);
-const DOT={Mañana:'#f2c744',Tarde:'#7ea2f2',Noche:'#48c774'};
-function ventaDia(f){let t=0;ventas.filter(v=>v.f===f).forEach(v=>v.j.forEach(j=>t+=j.p));return t;}
-function pintarCaja(){
- $('vHoy').textContent=fmt(ventaDia(HOY));
- $('pHoy').textContent=fmt(premios.filter(p=>p.f===HOY).reduce((a,p)=>a+p.pagado,0));
- $('gHoy').textContent=fmt(ventaDia(HOY)-premios.filter(p=>p.f===HOY).reduce((a,p)=>a+p.pagado,0));
- let hist=0;ventas.forEach(v=>v.j.forEach(j=>hist+=j.p));
- $('hist').textContent='Total histórico: '+fmt(hist);
- pintarBreakdown();
-}
-function pintarBreakdown(){
- const f=$('fechaSorteo').value;const bd=$('breakdown');bd.innerHTML='';
- ['Mañana','Tarde','Noche'].forEach(s=>{
-  let m=0;ventas.filter(v=>v.f===f&&v.s===s).forEach(v=>v.j.forEach(j=>m+=j.p));
-  bd.innerHTML+='<div class="fila"><span class="n"><span class="dot" style="background:'+DOT[s]+'"></span>'+s+'</span><span class="m">'+fmt(m)+'</span></div>';
- });
- bd.innerHTML+='<div class="fila"><span class="n">Total del día</span><span class="m">'+fmt(ventaDia(f))+'</span></div>';
-}
-function rangoTotal(){
- const d=$('desde').value,h=$('hasta').value;
- let t=0;ventas.filter(v=>v.f>=d&&v.f<=h).forEach(v=>v.j.forEach(j=>t+=j.p));
- $('totRango').textContent=fmt(t);
-}
-function ganadoresAgrupados(){
- const val=$('selSorteo').value||'';
- const [f,s]=val.split('|');
- const raw=$('numGan').value.trim();
- if(!f||!raw)return[];
- const num=raw.padStart(2,'0');
- const map={};
- ventas.filter(v=>v.f===f&&v.s===s).forEach(v=>v.j.forEach(j=>{
-  if(j.n===num){
-   const c=v.c||'General';
-   if(!map[c])map[c]={c,veces:0,t:0};
-   map[c].veces++;map[c].t+=j.p;
+  const grid = document.getElementById('grid');
+  const enCarrito = [45,78,12];
+  const seleccionado = [33];
+  for (let n = 0; n < 100; n++) {
+    const num = String(n).padStart(2,'0');
+    const b = document.createElement('button');
+    b.textContent = num;
+    let cls = 'rounded-md flex items-center justify-center text-[13px] font-extrabold ';
+    if (seleccionado.includes(n)) cls += 'bg-[#1a4a3a] text-white shadow-md';
+    else if (enCarrito.includes(n)) cls += 'bg-emerald-100 text-[#1a4a3a]';
+    else cls += 'bg-slate-100 text-slate-700';
+    b.className = cls;
+    grid.appendChild(b);
   }
- }));
- return Object.values(map).filter(g=>!premios.some(p=>p.f===f&&p.s===s&&p.num===num&&p.cliente===g.c));
-}
-function pintarWin(){
- const num=$('numGan').value.trim().padStart(2,'0');
- const gs=ganadoresAgrupados();
- const wl=$('winList');wl.innerHTML='';
- gs.forEach(g=>{
-  const d=document.createElement('div');
-  d.className='gane';
-  d.innerHTML='<div class="c">'+num+'</div><div class="d"><b>'+g.c+'</b><small>'+g.veces+' vez'+(g.veces>1?'es':'')+' · jugó '+fmt(g.t)+'</small></div><button class="pay">Pagar '+fmt(g.t*70)+'</button>';
-  d.querySelector('.pay').onclick=()=>{
-   const [f,s]=($('selSorteo').value||'|').split('|');
-   premios.unshift({f,s,num,nom:NOM[parseInt(num,10)]||'',veces:g.veces,vendido:g.t,pagado:g.t*70,cliente:g.c});
-   pintarCaja();pintarWin();
-   toast('Pagado a '+g.c+': '+fmt(g.t*70)+' · gane registrado '+fmt(g.t)+' ✓');
-  };
-  wl.appendChild(d);
- });
- if($('numGan').value.trim()&&!gs.length)wl.innerHTML='<p style="color:#98a2ae;font-size:13px;text-align:center">Nadie jugó ese número (o ya se pagó).</p>';
- const tv=gs.reduce((a,g)=>a+g.t,0);
- $('gane').textContent=gs.length?fmt(tv):'—';
- $('pago').textContent=gs.length?fmt(tv*70):'—';
-}
-function pintarMeses(){
- const meses=[...new Set(premios.map(p=>p.f.slice(0,7)))].sort().reverse();
- const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
- $('mesSel').innerHTML=meses.map(m=>'<option value="'+m+'">'+MESES[parseInt(m.slice(5),10)-1]+' '+m.slice(0,4)+'</option>').join('');
- $('mesSel').onchange=pintarDias;pintarDias();
-}
-function pintarDias(){
- const mes=$('mesSel').value;const delMes=premios.filter(p=>p.f.startsWith(mes));
- $('totMes').textContent=fmt(delMes.reduce((a,p)=>a+p.vendido,0));
- const fechas=[...new Set(delMes.map(p=>p.f))].sort().reverse();
- const c=$('dias');c.innerHTML='';
- fechas.forEach(f=>{
-  const delDia=delMes.filter(p=>p.f===f);
-  const d=document.createElement('div');d.className='dia';
-  d.innerHTML='<button class="hd"><span>'+f.slice(8,10)+'/'+f.slice(5,7)+'/'+f.slice(2,4)+'</span><small>'+fmt(delDia.reduce((a,p)=>a+p.vendido,0))+' ▾</small></button><div class="bd" style="display:none"></div>';
-  const bd=d.querySelector('.bd');
-  delDia.forEach(p=>{bd.innerHTML+='<div class="gane"><div class="c">'+p.num+'</div><div class="d"><b>'+p.num+' '+p.nom+'</b><small>'+p.s+' · '+p.veces+' vez'+(p.veces>1?'es':'')+'</small></div><div class="m">'+fmt(p.vendido)+'</div></div>';});
-  d.querySelector('.hd').onclick=()=>{bd.style.display=bd.style.display==='none'?'block':'none';};
-  c.appendChild(d);
- });
-}
-$('abreRango').onclick=()=>{rangoTotal();$('sheetRango').classList.add('open');};
-$('desde').oninput=rangoTotal;$('hasta').oninput=rangoTotal;
-$('cierraRango').onclick=()=>$('sheetRango').classList.remove('open');
-$('pagarPremio').onclick=()=>{
- const combos=[...new Set(ventas.map(v=>v.f+'|'+v.s))];
- $('selSorteo').innerHTML=combos.map(c=>{const [f,s]=c.split('|');return '<option value="'+c+'">'+s+' ('+f+')</option>';}).join('');
- $('numGan').value='';pintarWin();
- $('sheetPago').classList.add('open');
-};
-$('selSorteo').onchange=pintarWin;$('numGan').oninput=pintarWin;
-$('cancela').onclick=()=>$('sheetPago').classList.remove('open');
-$('verMeses').onclick=()=>{pintarMeses();go(2);};
-$('v2').onclick=()=>go(1);
-$('fechaSorteo').onchange=pintarBreakdown;
-pintarCaja();
 </script>
 </body>
 </html>
