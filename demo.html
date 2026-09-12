@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MI LOTERÍA · Nueva venta (prototipo v4)</title>
+<title>MI LOTERÍA · Nueva venta (prototipo v5)</title>
 <style>
 :root{
   --primary:#14564A; --on-primary:#FFFFFF;
@@ -36,33 +36,23 @@ header{flex-shrink:0;padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
 .disp-info{flex:1;min-width:0}
 .disp-name{font-size:15px;font-weight:700}
 .disp-sub{font-size:11px;color:var(--on-var);margin-top:2px}
+/* ---- zona central: recibo IZQ + teclado DER (nunca se aplastan) ---- */
 .main{flex:1;min-height:0;display:flex;gap:10px;padding:0 12px 6px}
-.ticket{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.main>.ticket,.main>.pad{min-width:0}
+.ticket{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
 .ticket-head{padding:7px 10px;font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--on-var);background:var(--surface-container);display:flex;justify-content:space-between;gap:6px;flex-shrink:0}
 .ticket-list{flex:1;overflow-y:auto;padding:2px 8px;scrollbar-width:none}
 .ticket-list::-webkit-scrollbar{display:none}
-/* --- líneas del recibo: limpias, y al tocarlas aparecen las opciones detrás --- */
-.trow{display:flex;align-items:center;gap:8px;padding:10px 2px;border-bottom:1px dashed #DCE7E2;cursor:pointer}
+.trow{display:flex;align-items:center;gap:8px;padding:11px 2px;border-bottom:1px dashed #DCE7E2;cursor:pointer}
 .trow:last-child{border-bottom:none}
 .trow:active{background:var(--surface-container)}
-.tnum{flex:1;min-width:0;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--on-surface)}
+.tnum{flex:1;min-width:0;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tpre{font-size:14px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;flex-shrink:0}
 .tdots{color:#C9D3CF;font-size:15px;font-weight:800;flex-shrink:0;margin-left:2px}
-.tact{display:flex;gap:6px;width:100%;align-items:center}
-.tbtn2{border:none;border-radius:10px;padding:9px 6px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-family:inherit}
-.tbtn2.edit{flex:1;background:var(--surface-container);color:var(--primary)}
-.tbtn2.del{flex:1;background:var(--error-container);color:var(--error)}
-.tbtn2.close{flex:0 0 32px;background:transparent;color:var(--on-var);font-size:13px}
-.ein{background:#fff;border:1px solid var(--primary);border-radius:10px;padding:8px;font-size:13px;font-weight:700;outline:none;font-family:inherit;color:var(--on-surface)}
-.ein.nums{flex:1;min-width:0}
-.ein.precio{width:74px;flex-shrink:0}
-.tbtn{width:30px;height:30px;border-radius:10px;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-.tbtn.ok{background:var(--primary);color:#fff}
-.tbtn.cancel{background:var(--surface-container);color:var(--on-var)}
 .empty{color:var(--on-var);font-size:11px;padding:12px 4px;text-align:center;line-height:1.6}
 .ticket-foot{padding:8px 10px;border-top:1px dashed #DCE7E2;display:flex;justify-content:space-between;font-size:13.5px;font-weight:800;flex-shrink:0}
 .ticket-foot span:last-child{color:var(--primary);font-variant-numeric:tabular-nums}
-.pad{flex:1.05;min-width:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:8px}
+.pad{flex:1.05;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);gap:8px}
 .key{background:#fff;border:1px solid var(--line);border-radius:16px;font-size:20px;font-weight:700;color:var(--on-surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit;min-height:0}
 .key:active{transform:scale(.95);background:var(--primary-soft)}
 .key.fn{color:var(--on-var)}
@@ -88,6 +78,24 @@ header{flex-shrink:0;padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
 .nav .pill{height:28px;padding:0 16px;border-radius:20px;display:flex;align-items:center;justify-content:center}
 .nav button.on{color:var(--primary);font-weight:800}
 .nav button.on .pill{background:var(--primary-soft)}
+/* ---- HOJA DE EDICIÓN (Material You bottom sheet) ---- */
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{width:100%;max-width:430px;background:var(--surface);border-radius:28px 28px 0 0;padding:14px 20px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.25);animation:subir .22s ease-out}
+@keyframes subir{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.handle{width:44px;height:5px;border-radius:3px;background:#D5DEDA;margin:0 auto 12px}
+.sheet-in h3{font-size:18px;font-weight:800;color:var(--on-surface)}
+.edsub{font-size:12px;color:var(--on-var);margin:2px 0 10px}
+.edlabel{display:block;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--on-var);margin:10px 0 6px}
+.edinput{width:100%;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;font-size:16px;font-weight:600;color:var(--on-surface);outline:none;font-family:inherit}
+.edinput:focus{border-color:var(--primary)}
+.preview{margin-top:8px;display:inline-block;background:var(--primary-soft);color:var(--primary);font-size:13px;font-weight:800;border-radius:10px;padding:6px 12px}
+.amtrow{display:flex;gap:8px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
+.amtrow::-webkit-scrollbar{display:none}
+.btnrow{display:flex;gap:10px;margin-top:16px}
+.bton{border:none;border-radius:16px;padding:14px 12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.bton.neutral{flex:1;background:var(--surface-container);color:var(--on-surface)}
+.bton.primary{flex:1.2;background:var(--primary);color:#fff}
+.bton.danger{width:100%;margin-top:10px;background:var(--error-container);color:var(--error)}
 .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-90px);background:var(--primary);color:#fff;border-radius:20px;padding:10px 18px;font-size:13px;font-weight:700;z-index:99;transition:transform .3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
@@ -146,18 +154,14 @@ header{flex-shrink:0;padding:calc(8px + env(safe-area-inset-top)) 12px 8px}
     <button><span class="pill"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></span>Más</button>
   </div>
 </div>
+
+<div id="editorRoot"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const NOMBRES=['Avión','Pies','Mujer','Muerto','Tigre','Embarazada','Elefante','Navaja','Conejo','Hombre','Anillo','Perro','Caballo','Gato','Boda','Ratón','Niña','Joven','Ángel','Mariposa','Espejo','Pájaro','Ataúd','Mono','Sapo','Balanza','Bandera','Juego','Gallo','Padre','Bolo','Alacrán','Culebra','Carpintero','Música','Virgen','Viejita','Suerte','Pistola','Jabón','Cielo','Novia','Madre','Pantera','Mesas','Iglesia','Familia','Banco','Estrella','Sombra','Luna Nueva','Policía','Zorrillo','Llanta','Licor','Olas','Árbol','Cuchillo','Venado','Selva','Dragón','Guerra','Lagarto','Coco','Mueble','Pintura','Diablo','Vaca','Ladrón','Soldado','Oro','Zapatos','Arco','Fuego','Edificio','Reina','Palomas','Humo','Tienda','Flores','Café','Rieles','Escuela','Bote','Corona','Casa','Reloj','León','Platos','Búho','Lentes','Tortuga','Águila','Cartero','Carro','Costurera','Dinero','Viejito','Bailes','Aretes'];
-const LAPIZ='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>';
-const BASURA='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
-const CHECK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const XMARK='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 let cur='', numFijo=null, clienteOn=false, pago='contado';
-let rowMode={};               // id de línea -> 'acciones' | 'edit'
-let editVals={nums:'',precio:''};
-// Semilla de demo para que veas las líneas limpias de inmediato
+let editId=null, editNums='', editPrecio='';
 let ticket=[
   {id:'d1',nums:['11'],precio:80},
   {id:'d2',nums:['34'],precio:20},
@@ -167,56 +171,90 @@ const $=s=>document.querySelector(s);
 const nombre=n=>NOMBRES[parseInt(n,10)]||'';
 const formatL=n=>'L '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const total=()=>ticket.reduce((s,t)=>s+t.precio,0);
+const esc=s=>String(s).replace(/"/g,'&quot;');
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
-/* ---- flujo de 2 pasos: número -> monto -> recibo ---- */
+/* ---- captura de número (2 pasos: número -> monto) ---- */
 function tecla(d){ if(cur.length>=2)return; cur+=d; if(cur.length===2){ numFijo=cur; cur=''; } render(); }
 function retro(){ if(cur) cur=cur.slice(0,-1); else numFijo=null; render(); }
 function borrar(){ cur=''; numFijo=null; render(); }
 function ponMonto(v){ if(numFijo){ ticket.push({id:Date.now()+''+Math.random(),nums:[numFijo],precio:v}); numFijo=null; render(); } }
 function ponOtro(){ const v=parseFloat(($('#otro')||{}).value); if(numFijo&&v>0){ ticket.push({id:Date.now()+''+Math.random(),nums:[numFijo],precio:v}); numFijo=null; render(); } }
-/* ---- líneas del recibo: tocar -> opciones detrás ---- */
-function toggleAcciones(id){ rowMode = rowMode[id] ? {} : {[id]:'acciones'}; render(); }
-function cerrarModos(){ rowMode={}; render(); }
-function iniciarEdicion(id){ const t=ticket.find(x=>x.id===id); if(!t)return; editVals={nums:t.nums.join(','),precio:String(t.precio)}; rowMode={[id]:'edit'}; render(); }
-function guardarEdicion(id){
-  const nums=editVals.nums.split(',').map(s=>s.trim()).filter(Boolean).map(n=>n.padStart(2,'0'));
-  const precio=parseFloat(editVals.precio);
-  if(!nums.length||!(precio>0)){ toast('Revisa el número y el monto'); return; }
-  const t=ticket.find(x=>x.id===id); if(t){ t.nums=nums; t.precio=precio; }
-  rowMode={}; render();
+/* ---- hoja de edición (bottom sheet Material You) ---- */
+function previewDe(numsStr){
+  const ns=numsStr.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!ns.length) return '—';
+  return ns.map(n=>{ const p=n.padStart(2,'0'); return p+' '+nombre(p); }).join(', ');
 }
-function eliminarLinea(id){ ticket=ticket.filter(x=>x.id!==id); rowMode={}; render(); }
+function abrirEditor(id){
+  const t=ticket.find(x=>x.id===id); if(!t) return;
+  editId=id; editNums=t.nums.join(','); editPrecio=String(t.precio);
+  render();
+}
+function cerrarEditor(){ editId=null; render(); }
+function edNumsInput(el){ editNums=el.value; const p=$('#edPreview'); if(p) p.textContent=previewDe(editNums); }
+function edPrecioInput(el){ editPrecio=el.value; }
+function edChip(v){ editPrecio=String(v); const i=$('#edPrecio'); if(i) i.value=v; }
+function guardarEditor(){
+  const nums=editNums.split(',').map(s=>s.trim()).filter(Boolean).map(n=>n.padStart(2,'0'));
+  const precio=parseFloat(editPrecio);
+  if(!nums.length||!(precio>0)){ toast('Revisa el número y el monto'); return; }
+  const t=ticket.find(x=>x.id===editId); if(t){ t.nums=nums; t.precio=precio; }
+  editId=null; render();
+}
+function eliminarDesdeEditor(){
+  ticket=ticket.filter(x=>x.id!==editId);
+  editId=null; render();
+}
 function toggleCliente(){ clienteOn=!clienteOn; if(!clienteOn) pago='contado'; render(); }
 function setPago(p){ pago=p; render(); }
-function facturar(){ if(!ticket.length)return; toast('✓ Facturado '+formatL(total())+' · demo'); ticket=[]; numFijo=null; cur=''; rowMode={}; render(); }
+function facturar(){ if(!ticket.length)return; toast('✓ Facturado '+formatL(total())+' · demo'); ticket=[]; numFijo=null; cur=''; render(); }
+/* ---- render ---- */
 function render(){
   const d=$('#display');
   if(numFijo){ d.innerHTML='<div class="num-big">'+numFijo+'</div><div class="disp-info"><div class="disp-name">'+numFijo+' '+nombre(numFijo)+'</div><div class="disp-sub">Elige el monto abajo y queda en el recibo</div></div>'; }
   else if(cur){ d.innerHTML='<div class="num-big">'+cur+'</div><div class="disp-info"><div class="disp-name">escribiendo…</div><div class="disp-sub">La Diaria · Números y Símbolos</div></div>'; }
   else { d.innerHTML='<div class="disp-info"><div class="disp-name" style="color:var(--on-var);font-weight:600">Elige el número</div><div class="disp-sub">La Diaria · Números y Símbolos</div></div>'; }
   const tl=$('#ticketList');
-  tl.innerHTML = ticket.length ? ticket.map(t=>{
-    const m=rowMode[t.id];
-    if(m==='edit'){
-      return '<div class="trow">'
-        +'<input class="ein nums" value="'+editVals.nums+'" oninput="editVals.nums=this.value" placeholder="número(s)">'
-        +'<input class="ein precio" type="number" value="'+editVals.precio+'" oninput="editVals.precio=this.value">'
-        +'<button class="tbtn ok" onclick="guardarEdicion(\''+t.id+'\')">'+CHECK+'</button>'
-        +'<button class="tbtn cancel" onclick="cerrarModos()">'+XMARK+'</button>'
-        +'</div>';
-    }
-    if(m==='acciones'){
-      return '<div class="trow"><div class="tact">'
-        +'<button class="tbtn2 edit" onclick="iniciarEdicion(\''+t.id+'\')">'+LAPIZ+' Editar</button>'
-        +'<button class="tbtn2 del" onclick="eliminarLinea(\''+t.id+'\')">'+BASURA+' Eliminar</button>'
-        +'<button class="tbtn2 close" onclick="cerrarModos()">'+XMARK+'</button>'
-        +'</div></div>';
-    }
-    return '<div class="trow" onclick="toggleAcciones(\''+t.id+'\')">'
-      +'<span class="tnum">'+t.nums.map(n=>n+' '+nombre(n)).join(', ')+'</span>'
-      +'<span class="tpre">'+formatL(t.precio)+'</span>'
-      +'<span class="tdots">⋮</span>'
-      +'</div>';
-  }).join('') : '<div class="empty">El recibo aparecerá aquí.<br>Toca cualquier línea para editar o eliminar.</div>';
+  tl.innerHTML = ticket.length ? ticket.map(t=>(
+    '<div class="trow" onclick="abrirEditor(\''+t.id+'\')">'
+    +'<span class="tnum">'+t.nums.map(n=>n+' '+nombre(n)).join(', ')+'</span>'
+    +'<span class="tpre">'+formatL(t.precio)+'</span>'
+    +'<span class="tdots">⋮</span>'
+    +'</div>'
+  )).join('') : '<div class="empty">El recibo aparecerá aquí.<br>Toca cualquier línea para editarla.</div>';
   tl.scrollTop=tl.scrollHeight;
-  $('#ticketCount').textContent=tic
+  $('#ticketCount').textContent=ticket.length+' jugada(s)';
+  $('#ticketTotal').textContent=formatL(total());
+  $('#amounts').innerHTML=[10,20,50,80,100].map(v=>'<button class="amt'+(numFijo?'':' off')+'" onclick="ponMonto('+v+')">L '+v+'</button>').join('')+'<input id="otro" class="otro" type="number" placeholder="Otro" inputmode="numeric"><button class="amt'+(numFijo?'':' off')+'" onclick="ponOtro()">OK</button>';
+  const p=$('#clientPill'); p.className='clientpill'+(clienteOn?' on':'');
+  p.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="cname">'+(clienteOn?'Ezequiel':'Cliente (opcional)')+'</span>'+(clienteOn?'<span style="font-size:11px;color:var(--on-var)">'+pago+'</span>':'');
+  $('#pagoSeg').style.display=clienteOn?'flex':'none';
+  $('#pagoContado').className=pago==='contado'?'on':'';
+  $('#pagoCredito').className=pago==='credito'?'on':'';
+  const f=$('#facturarBtn'); f.disabled=!ticket.length;
+  f.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-3a2 2 0 0 0 0-6V6a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg>FACTURAR · '+formatL(total());
+  /* hoja de edición */
+  $('#editorRoot').innerHTML = editId ? (
+    '<div class="sheet" onclick="if(event.target===this)cerrarEditor()">'
+    +'<div class="sheet-in">'
+    +'<div class="handle"></div>'
+    +'<h3>Editar jugada</h3>'
+    +'<p class="edsub">Cambia el número o el monto. También puedes eliminar la jugada.</p>'
+    +'<label class="edlabel">Número(s)</label>'
+    +'<input class="edinput" id="edNums" value="'+esc(editNums)+'" oninput="edNumsInput(this)" placeholder="ej: 25  ó  11,34" inputmode="numeric">'
+    +'<div class="preview" id="edPreview">'+previewDe(editNums)+'</div>'
+    +'<label class="edlabel">Monto (L)</label>'
+    +'<input class="edinput" id="edPrecio" type="number" inputmode="decimal" value="'+esc(editPrecio)+'" oninput="edPrecioInput(this)">'
+    +'<div class="amtrow">'+[10,20,50,80,100].map(v=>'<button class="amt" onclick="edChip('+v+')">L '+v+'</button>').join('')+'</div>'
+    +'<div class="btnrow">'
+    +'<button class="bton neutral" onclick="cerrarEditor()">Cancelar</button>'
+    +'<button class="bton primary" onclick="guardarEditor()">Guardar</button>'
+    +'</div>'
+    +'<button class="bton danger" onclick="eliminarDesdeEditor()">Eliminar esta jugada</button>'
+    +'</div></div>'
+  ) : '';
+}
+render();
+</script>
+</body>
+</html>
